@@ -13,6 +13,7 @@ namespace PersonalFinance.Web.Models
         [Key]
         public virtual Guid Id { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         [Column(TypeName = "Date")]
         public virtual DateTime Date { get; set; }
         [Column(TypeName = "decimal(10,2)")]
