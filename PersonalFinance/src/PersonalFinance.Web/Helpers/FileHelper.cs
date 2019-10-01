@@ -35,7 +35,7 @@ namespace PersonalFinance.Web.Helpers
             }
         }
 
-        public List<ITransaction> GetExpenses(ICollection<Transaction> transactions)
+        public List<Expense> GetExpenses(ICollection<Transaction> transactions)
         {
             var expenses = new List<Expense>();
 
@@ -57,7 +57,7 @@ namespace PersonalFinance.Web.Helpers
                         });
                     }
                 }
-                return expenses.ToList<ITransaction>();
+                return expenses.ToList<Expense>();
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace PersonalFinance.Web.Helpers
             }
         }
 
-        public List<ITransaction> GetIncome(ICollection<Transaction> transactions)
+        public List<Income> GetIncome(ICollection<Transaction> transactions)
         {
             var income = new List<Income>();
 
@@ -86,7 +86,7 @@ namespace PersonalFinance.Web.Helpers
                         });
                     }
                 }
-                return income.ToList<ITransaction>();
+                return income.ToList<Income>();
             }
             catch (Exception ex)
             {

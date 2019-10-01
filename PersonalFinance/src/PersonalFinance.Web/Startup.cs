@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PersonalFinance.Web.Data;
 using PersonalFinance.Web.Interfaces;
 using PersonalFinance.Web.Models;
+using PersonalFinance.Web.Services;
+using PersonalFinance.Web.Services.Interfaces;
 
 namespace PersonalFinance.Web
 {
@@ -35,6 +37,7 @@ namespace PersonalFinance.Web
 
             services.AddScoped<ITransaction, Income>();
             services.AddScoped<ITransaction, Expense>();
+            services.AddScoped<IExpenseService, ExpenseService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
