@@ -13,9 +13,10 @@ namespace PersonalFinance.Web.Helpers
 {
     public class FileHelper
     {
+        public string pathBase = @"C:\CODE\Projects\PersonalFinance\src\PersonalFinance.Web\Resources\BankStatements\";
+
         public ICollection<Transaction> GetTransactions()
         {
-            var pathBase = @"C:\CODE\Projects\PersonalFinance\src\PersonalFinance.Web\Resources\BankStatements\";
 
             try
             {
@@ -47,7 +48,6 @@ namespace PersonalFinance.Web.Helpers
                     {
                         expenses.Add(new Expense
                         {
-                            Id = Guid.NewGuid(),
                             Date = DateTime.Parse(transaction.ValueDate.ToShortDateString()),
                             Amount = decimal.Parse(transaction.Amount.Value.ToString()),
                             Description = transaction.Description,
@@ -77,7 +77,6 @@ namespace PersonalFinance.Web.Helpers
                     {
                         income.Add(new Income
                         {
-                            Id = Guid.NewGuid(),
                             Date = DateTime.Parse(transaction.ValueDate.ToShortDateString()),
                             Amount = decimal.Parse(transaction.Amount.Value.ToString()),
                             Description = transaction.Description,

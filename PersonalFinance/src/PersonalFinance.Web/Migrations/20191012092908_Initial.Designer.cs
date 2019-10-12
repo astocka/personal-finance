@@ -10,7 +10,7 @@ using PersonalFinance.Web.Data;
 namespace PersonalFinance.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190929161323_Initial")]
+    [Migration("20191012092908_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,8 +188,9 @@ namespace PersonalFinance.Web.Migrations
 
             modelBuilder.Entity("PersonalFinance.Web.Models.Expense", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
@@ -212,8 +213,9 @@ namespace PersonalFinance.Web.Migrations
 
             modelBuilder.Entity("PersonalFinance.Web.Models.Income", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");

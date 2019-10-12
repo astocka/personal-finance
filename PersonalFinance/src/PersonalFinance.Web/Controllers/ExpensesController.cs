@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PersonalFinance.Web.Services.Interfaces;
 
@@ -30,6 +27,18 @@ namespace PersonalFinance.Web.Controllers
             {
                 TempData["ExpensesExist"] = "Expenses already exist in database!";
             }
+            return RedirectToAction("Index", "Expenses");
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            await _expenseService.DeleteExpenseAsync(id);
             return RedirectToAction("Index", "Expenses");
         }
     }

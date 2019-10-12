@@ -24,9 +24,9 @@ namespace PersonalFinance.Web.Services
             return await _dataContext.Expenses.OrderByDescending(o => o.Date).ToListAsync();
         }
 
-        public Task<Expense> GetExpenseByIdAsync(Guid expenseId)
+        public async Task<Expense> GetExpenseByIdAsync(int expenseId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Expenses.FirstOrDefaultAsync(x => x.Id == expenseId);
         }
 
         public async Task<bool> ImportExpensesAsync()
@@ -60,13 +60,20 @@ namespace PersonalFinance.Web.Services
             var created = await _dataContext.SaveChangesAsync();
             return created > 0;
         }
-
-        public Task<bool> UpdateExpenseAsync(Expense expenseToUpdate)
+        public async Task<bool> DeleteExpenseAsync(int expenseId)
         {
-            throw new NotImplementedException();
+            Expense expenseToDelete = await GetExpenseByIdAsync(expenseId);
+            if (expenseToDelete == null)
+            {
+                return false;
+            }
+            _dataContext.Expenses.Remove(expenseToDelete);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
+
         }
 
-        public Task<bool> DeleteExpenseAsync(Guid expenseId)
+        public Task<bool> UpdateExpenseAsync(Expense expenseToUpdate)
         {
             throw new NotImplementedException();
         }

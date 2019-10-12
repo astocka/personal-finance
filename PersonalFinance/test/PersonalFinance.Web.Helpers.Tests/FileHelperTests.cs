@@ -63,7 +63,6 @@ namespace PersonalFinance.Web.Helpers.Tests
                     {
                         expenses.Add(new Expense
                         {
-                            Id = Guid.NewGuid(),
                             Date = DateTime.Parse(transaction.ValueDate.ToShortDateString()),
                             Amount = decimal.Parse(transaction.Amount.Value.ToString()),
                             Description = transaction.Description,
@@ -104,7 +103,6 @@ namespace PersonalFinance.Web.Helpers.Tests
                     {
                         income.Add(new Income
                         {
-                            Id = Guid.NewGuid(),
                             Date = DateTime.Parse(transaction.ValueDate.ToShortDateString()),
                             Amount = decimal.Parse(transaction.Amount.Value.ToString()),
                             Description = transaction.Description,

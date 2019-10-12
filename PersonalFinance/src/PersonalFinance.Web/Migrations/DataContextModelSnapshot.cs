@@ -186,8 +186,9 @@ namespace PersonalFinance.Web.Migrations
 
             modelBuilder.Entity("PersonalFinance.Web.Models.Expense", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
@@ -210,8 +211,9 @@ namespace PersonalFinance.Web.Migrations
 
             modelBuilder.Entity("PersonalFinance.Web.Models.Income", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");

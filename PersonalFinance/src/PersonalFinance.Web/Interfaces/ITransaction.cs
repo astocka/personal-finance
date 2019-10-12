@@ -7,7 +7,7 @@ namespace PersonalFinance.Web.Interfaces
 {
    public interface ITransaction
     {
-          Guid Id { get; set; }
+          int Id { get; set; }
           DateTime Date { get; set; }
           decimal Amount { get; set; }
           string Description { get; set; }
