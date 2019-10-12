@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PersonalFinance.Web.Models;
 using PersonalFinance.Web.Services.Interfaces;
@@ -68,8 +69,16 @@ namespace PersonalFinance.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _expenseService.UpdateExpenseAsync(expense);
-                return RedirectToAction("Index", "Expenses");
+                try
+                {
+                    expense.Amount = (decimal)expense.Amount;
+                    await _expenseService.UpdateExpenseAsync(expense);
+                    return RedirectToAction("Index", "Expenses");
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
             }
             return View(expense);
         }
@@ -86,8 +95,16 @@ namespace PersonalFinance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _expenseService.CreateExpenseAsync(expense);
-                return RedirectToAction("Index", "Expenses");
+                try
+                {
+                    expense.Amount = (decimal)expense.Amount;
+                    await _expenseService.CreateExpenseAsync(expense);
+                    return RedirectToAction("Index", "Expenses");
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
             }
             return View(expense);
         }
