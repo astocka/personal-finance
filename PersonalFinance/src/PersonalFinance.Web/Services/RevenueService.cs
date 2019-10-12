@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalFinance.Web.Data;
+using PersonalFinance.Web.Helpers;
 using PersonalFinance.Web.Models;
 using PersonalFinance.Web.Services.Interfaces;
 using System;
@@ -37,11 +38,40 @@ namespace PersonalFinance.Web.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> ImportRevenuesync()
+        public async Task<bool> ImportRevenueAsync()
         {
-            throw new NotImplementedException();
-        }
+            var fileHelper = new FileHelper();
+            var transactions = fileHelper.GetTransactions();
+            var revenues = fileHelper.GetRevenues(transactions);
 
+            var mapRevenues = new List<Revenue>();
+
+            foreach (var revenue in revenues)
+            {
+                mapRevenues.Add(new Revenue
+                {
+                    Id = revenue.Id,
+                    Date = revenue.Date,
+                    Amount = revenue.Amount,
+                    Description = revenue.Description,
+                    Notes = revenue.Notes,
+                    Payer = revenue.Payer,
+                });
+            }
+            foreach (var mapRevenue in mapRevenues)
+            {
+                if (!await _dataContext.Revenues.AnyAsync(x => x.Amount == mapRevenue.Amount && x.Date == mapRevenue.Date))
+                {
+                    {
+                        await _dataContext.Revenues.AddAsync(mapRevenue);
+                    }
+                }
+            }
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+
+
+        }
         public Task<bool> UpdateRevenueAsync(Revenue revenueToUpdate)
         {
             throw new NotImplementedException();

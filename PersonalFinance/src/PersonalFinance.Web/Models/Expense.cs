@@ -20,5 +20,6 @@ namespace PersonalFinance.Web.Models
         public virtual string Payee { get; set; }
         public virtual string Notes { get; set; }
         public virtual ExpenseType? Type { get; set; }
+        public string Payer { get; internal set; }
     }
 }

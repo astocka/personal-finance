@@ -65,9 +65,9 @@ namespace PersonalFinance.Web.Helpers
             }
         }
 
-        public List<Income> GetIncome(ICollection<Transaction> transactions)
+        public List<Revenue> GetRevenues(ICollection<Transaction> transactions)
         {
-            var income = new List<Income>();
+            var revenues = new List<Revenue>();
 
             try
             {
@@ -75,17 +75,17 @@ namespace PersonalFinance.Web.Helpers
                 {
                     if (transaction.DebitCredit.ToString() == "Credit")
                     {
-                        income.Add(new Income
+                        revenues.Add(new Revenue
                         {
                             Date = DateTime.Parse(transaction.ValueDate.ToShortDateString()),
                             Amount = decimal.Parse(transaction.Amount.Value.ToString()),
                             Description = transaction.Description,
-                            Payor = transaction.Details.Name,
+                            Payer = transaction.Details.Name,
                             Notes = "",
                         });
                     }
                 }
-                return income.ToList<Income>();
+                return revenues.ToList<Revenue>();
             }
             catch (Exception ex)
             {

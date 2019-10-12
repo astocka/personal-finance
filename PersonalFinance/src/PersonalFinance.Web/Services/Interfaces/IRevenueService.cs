@@ -11,7 +11,7 @@ namespace PersonalFinance.Web.Services.Interfaces
         Task<List<Revenue>> GetRevenuesAsync();
         Task<Revenue> GetRevenueByIdAsync(int revenueId);
         Task<bool> CreateRevenueAsync(Revenue revenue);
-        Task<bool> ImportRevenuesync();
+        Task<bool> ImportRevenueAsync();
         Task<bool> UpdateRevenueAsync(Revenue revenueToUpdate);
         Task<bool> DeleteRevenueAsync(int? revenueId);
     }

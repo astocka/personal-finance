@@ -21,5 +21,16 @@ namespace PersonalFinance.Web.Controllers
         {
             return View(await _revenueService.GetRevenuesAsync());
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ImportRevenues()
+        {
+            var result = await _revenueService.ImportRevenueAsync();
+            if (!result)
+            {
+                TempData["RevenuesExist"] = "Revenues already exist in database!";
+            }
+            return RedirectToAction("Index", "Revenues");
+        }
     }
 }
