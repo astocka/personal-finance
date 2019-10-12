@@ -73,9 +73,15 @@ namespace PersonalFinance.Web.Services
 
         }
 
-        public Task<bool> UpdateExpenseAsync(Expense expenseToUpdate)
+        public async Task<bool> UpdateExpenseAsync(Expense expenseToUpdate)
         {
-            throw new NotImplementedException();
+           if (expenseToUpdate == null)
+            {
+                return false;
+            }
+            _dataContext.Expenses.Update(expenseToUpdate);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
     }
 }

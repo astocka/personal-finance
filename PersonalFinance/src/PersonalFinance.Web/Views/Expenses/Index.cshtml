@@ -32,7 +32,11 @@
                 <td>@expense.Payee</td>
                 <td>@expense.Notes</td>
                 <td>@expense.Type</td>
-                <td>
+                <td class="form-inline">
+                    <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <input type="submit" value="Update" class="btn btn-warning" />
+                    </form>
                     <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
                         <input type="hidden" asp-for="@expense.Id" />
                         <input type="submit" value="Delete" class="btn btn-danger" />
