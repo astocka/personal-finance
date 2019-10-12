@@ -33,7 +33,7 @@ namespace PersonalFinance.Web.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -44,13 +44,13 @@ namespace PersonalFinance.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Update(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Expense expense = await _expenseService.GetExpenseByIdAsync(id);
+            Expense expense = await _expenseService.GetExpenseByIdAsync((int)id);
             if (expense == null)
             {
                 return NotFound();

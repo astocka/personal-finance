@@ -60,9 +60,15 @@ namespace PersonalFinance.Web.Services
             var created = await _dataContext.SaveChangesAsync();
             return created > 0;
         }
-        public async Task<bool> DeleteExpenseAsync(int expenseId)
+        public async Task<bool> DeleteExpenseAsync(int? expenseId)
         {
-            Expense expenseToDelete = await GetExpenseByIdAsync(expenseId);
+            if (expenseId == null)
+            {
+                return false;
+            }
+
+            Expense expenseToDelete = await GetExpenseByIdAsync((int)expenseId);
+
             if (expenseToDelete == null)
             {
                 return false;
@@ -75,7 +81,7 @@ namespace PersonalFinance.Web.Services
 
         public async Task<bool> UpdateExpenseAsync(Expense expenseToUpdate)
         {
-           if (expenseToUpdate == null)
+            if (expenseToUpdate == null)
             {
                 return false;
             }

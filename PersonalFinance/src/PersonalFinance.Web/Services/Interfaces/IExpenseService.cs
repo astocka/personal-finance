@@ -11,6 +11,6 @@ namespace PersonalFinance.Web.Services.Interfaces
         Task<Expense> GetExpenseByIdAsync(int expenseId);
         Task<bool> ImportExpensesAsync();
         Task<bool> UpdateExpenseAsync(Expense expenseToUpdate);
-        Task<bool> DeleteExpenseAsync(int expenseId);
+        Task<bool> DeleteExpenseAsync(int? expenseId);
     }
 }
