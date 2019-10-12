@@ -4,10 +4,12 @@
 
 <p class="display-4">Expenses</p>
 <hr />
-<div class="mt2">
-    <a class="btn btn-success" asp-controller="Expenses" asp-action="ImportExpenses" type="submit">Import expenses</a>
+<div class="mt2 form-inline">
+    <a class="btn btn-success" asp-controller="Expenses" asp-action="Create" type="submit">Add expense</a>
+    <a class="btn btn-info" asp-controller="Expenses" asp-action="ImportExpenses" type="submit">Import expenses</a>
     <span class="ml-2 mt-1 font-weight-bold text-danger"> @TempData["ExpensesExist"]</span>
 </div>
+  
 <br />
 
 <div class="mt-3">

@@ -29,6 +29,17 @@ namespace PersonalFinance.Web.Services
             return await _dataContext.Expenses.FirstOrDefaultAsync(x => x.Id == expenseId);
         }
 
+        public async Task<bool> CreateExpenseAsync(Expense expense)
+        {
+            if (expense == null)
+            {
+                return false;
+            }
+            _dataContext.Expenses.Add(expense);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+        }
+
         public async Task<bool> ImportExpensesAsync()
         {
             var fileHelper = new FileHelper();
@@ -89,5 +100,7 @@ namespace PersonalFinance.Web.Services
             var updated = await _dataContext.SaveChangesAsync();
             return updated > 0;
         }
+
+      
     }
 }

@@ -73,5 +73,23 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(expense);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Date,Amount,Description,Payee,Notes,Type")]Expense expense)
+        {
+            if (ModelState.IsValid)
+            {
+                await _expenseService.CreateExpenseAsync(expense);
+                return RedirectToAction("Index", "Expenses");
+            }
+            return View(expense);
+        }
     }
 }
