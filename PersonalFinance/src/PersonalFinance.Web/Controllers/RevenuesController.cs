@@ -32,5 +32,17 @@ namespace PersonalFinance.Web.Controllers
             }
             return RedirectToAction("Index", "Revenues");
         }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            await _revenueService.DeleteRevenueAsync(id);
+            return RedirectToAction("Index", "Revenues");
+        }
     }
 }

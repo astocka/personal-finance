@@ -23,20 +23,36 @@ namespace PersonalFinance.Web.Services
             return await _dataContext.Revenues.OrderByDescending(o => o.Date).ToListAsync();
         }
 
+        public async Task<Revenue> GetRevenueByIdAsync(int revenueId)
+        {
+            return await _dataContext.Revenues.FirstOrDefaultAsync(x => x.Id == revenueId);
+
+        }
+
         public Task<bool> CreateRevenueAsync(Revenue revenue)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteRevenueAsync(int? revenueId)
+        public async Task<bool> DeleteRevenueAsync(int? revenueId)
         {
-            throw new NotImplementedException();
+            if (revenueId == null)
+            {
+                return false;
+            }
+
+            Revenue revenueToDelete = await GetRevenueByIdAsync((int)revenueId);
+
+            if (revenueToDelete == null)
+            {
+                return false;
+            }
+            _dataContext.Revenues.Remove(revenueToDelete);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
         }
 
-        public Task<Revenue> GetRevenueByIdAsync(int revenueId)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<bool> ImportRevenueAsync()
         {
