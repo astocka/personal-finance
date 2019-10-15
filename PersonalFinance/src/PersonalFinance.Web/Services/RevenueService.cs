@@ -29,9 +29,15 @@ namespace PersonalFinance.Web.Services
 
         }
 
-        public Task<bool> CreateRevenueAsync(Revenue revenue)
+        public async Task<bool> CreateRevenueAsync(Revenue revenue)
         {
-            throw new NotImplementedException();
+            if (revenue == null)
+            {
+                return false;
+            }
+            _dataContext.Revenues.Add(revenue);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
         }
 
         public async Task<bool> DeleteRevenueAsync(int? revenueId)
@@ -51,8 +57,6 @@ namespace PersonalFinance.Web.Services
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
-
-
 
         public async Task<bool> ImportRevenueAsync()
         {

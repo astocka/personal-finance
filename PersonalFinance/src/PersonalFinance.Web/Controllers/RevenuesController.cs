@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PersonalFinance.Web.Models;
 using PersonalFinance.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,32 @@ namespace PersonalFinance.Web.Controllers
             }
             await _revenueService.DeleteRevenueAsync(id);
             return RedirectToAction("Index", "Revenues");
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Date,Amount,Description,Payer,Notes")]Revenue revenue)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    revenue.Amount = (decimal)revenue.Amount;
+                    await _revenueService.CreateRevenueAsync(revenue);
+                    return RedirectToAction("Index", "Revenues");
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(revenue);
         }
     }
 }
