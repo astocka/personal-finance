@@ -71,5 +71,44 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(revenue);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Revenue revenue = await _revenueService.GetRevenueByIdAsync((int)id);
+            if (revenue == null)
+            {
+                return NotFound();
+            }
+            return View(revenue);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int id, [Bind("Id,Date,Amount,Description,Payer,Notes")]Revenue revenue)
+        {
+            if (id != revenue.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    revenue.Amount = (decimal)revenue.Amount;
+                    await _revenueService.UpdateRevenueAsync(revenue);
+                    return RedirectToAction("Index", "Revenues");
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(revenue);
+        }
     }
 }

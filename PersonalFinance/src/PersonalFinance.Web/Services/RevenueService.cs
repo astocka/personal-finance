@@ -92,9 +92,15 @@ namespace PersonalFinance.Web.Services
 
 
         }
-        public Task<bool> UpdateRevenueAsync(Revenue revenueToUpdate)
+        public async Task<bool> UpdateRevenueAsync(Revenue revenueToUpdate)
         {
-            throw new NotImplementedException();
+            if (revenueToUpdate == null)
+            {
+                return false;
+            }
+            _dataContext.Revenues.Update(revenueToUpdate);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
     }
 }
