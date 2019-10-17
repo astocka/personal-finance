@@ -82,7 +82,7 @@ namespace PersonalFinance.Web.Helpers.Tests
         }
 
         [Test]
-        public void GetIncomeTests_TakeTransactions_ReturnIncome()
+        public void GetIncomeTests_TakeTransactions_ReturnRevenue()
         {
             try
             {
@@ -95,18 +95,18 @@ namespace PersonalFinance.Web.Helpers.Tests
 
                 var transactions = parsed.Select(x => x.Transactions).FirstOrDefault();
 
-                var income = new List<Income>();
+                var income = new List<Revenue>();
 
                 foreach (var transaction in transactions)
                 {
                     if (transaction.DebitCredit.ToString() == "Credit")
                     {
-                        income.Add(new Income
+                        income.Add(new Revenue
                         {
                             Date = DateTime.Parse(transaction.ValueDate.ToShortDateString()),
                             Amount = decimal.Parse(transaction.Amount.Value.ToString()),
                             Description = transaction.Description,
-                            Payor = transaction.Details.Name,
+                            Payer = transaction.Details.Name,
                             Notes = "",
                         });
                     }

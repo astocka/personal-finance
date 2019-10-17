@@ -15,7 +15,6 @@ namespace PersonalFinance.Web.Data
         }
 
         public DbSet<Expense> Expenses { get; set; }
-        public DbSet<Income> Incomes { get; set; }
         public DbSet<Revenue> Revenues { get; set; }
     }
 }

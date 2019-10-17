@@ -35,8 +35,8 @@ namespace PersonalFinance.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<DataContext>();
 
-            services.AddScoped<ITransaction, Income>();
             services.AddScoped<ITransaction, Expense>();
+            services.AddScoped<ITransaction, Revenue>();
             services.AddScoped<IExpenseService, ExpenseService>();
             services.AddScoped<IRevenueService, RevenueService>();
 
