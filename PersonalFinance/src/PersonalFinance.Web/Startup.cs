@@ -39,6 +39,7 @@ namespace PersonalFinance.Web
             services.AddScoped<ITransaction, Revenue>();
             services.AddScoped<IExpenseService, ExpenseService>();
             services.AddScoped<IRevenueService, RevenueService>();
+            services.AddScoped<IBudgetService, BudgetService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

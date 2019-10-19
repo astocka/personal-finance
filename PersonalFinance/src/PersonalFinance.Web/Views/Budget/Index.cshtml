@@ -1,0 +1,39 @@
+﻿@using System.Globalization;
+@model List<PersonalFinance.Web.Models.Budget>
+
+
+<p class="display-4">Budget</p>
+<hr />
+
+<div class="mt-3">
+    <table class="table table-borderless">
+        <tr class="table-dark">
+            <th>Id</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Total Revenue</th>
+            <th>Planned Expenses</th>
+            <th>Options</th>
+        </tr>
+        @foreach (var budget in Model)
+        {
+            <tr class="table table-bordered">
+                <td>@budget.Id.ToString()</td>
+                <td>@budget.Month)</td>
+                <td>@budget.Year</td>
+                <td>@budget.TotalRevenue</td>
+                <td>@budget.PlannedExpenses</td>
+                <td class="form-inline">
+                    <form asp-controller="Budget" asp-action="Update" asp-route-id="@budget.Id" method="get">
+                        <input type="hidden" asp-for="@budget.Id" />
+                        <input type="submit" value="Update" class="btn btn-warning" />
+                    </form>
+                    <form asp-controller="Budget" asp-action="Delete" asp-route-id="@budget.Id" method="post">
+                        <input type="hidden" asp-for="@budget.Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
