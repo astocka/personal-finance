@@ -1,0 +1,47 @@
+﻿@using System.Globalization;
+@model PersonalFinance.Web.Models.Budget
+
+
+<p class="display-4">Create an budget</p>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Month" class="custom-control"></label>
+                <input type="number" asp-for="Month" class="form-control" />
+                <span asp-validation-for="Month" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="custom-control"></label>
+                <input type="number" asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalRevenue" class="custom-control"></label>
+                <input type="text" asp-for="TotalRevenue" class="form-control" />
+                <span asp-validation-for="TotalRevenue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlannedExpenses" class="custom-control"></label>
+                <input type="text" asp-for="PlannedExpenses" class="form-control" />
+                <span asp-validation-for="PlannedExpenses" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Expenses" class="custom-control"></label>
+                <input type="text" asp-for="Expenses" class="form-control" />
+                <span asp-validation-for="Expenses" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Revenues" class="custom-control"></label>
+                <input type="text" asp-for="Revenues" class="form-control" />
+                <span asp-validation-for="Revenues" class="text-danger"></span>
+            </div>*@
+
+            <a class="btn btn-dark" asp-controller="Budget" asp-action="Index">Back to list</a>
+            <input type="submit" value="Save" class="btn btn-success" />
+        </form>
+    </div>
+</div>

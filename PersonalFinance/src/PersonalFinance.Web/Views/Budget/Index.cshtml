@@ -4,6 +4,9 @@
 
 <p class="display-4">Budget</p>
 <hr />
+<div class="mt2 form-inline">
+    <a class="btn btn-success" asp-controller="Budget" asp-action="Create" type="submit">Add budget</a>
+</div>
 
 <div class="mt-3">
     <table class="table table-borderless">
@@ -13,17 +16,22 @@
             <th>Year</th>
             <th>Total Revenue</th>
             <th>Planned Expenses</th>
+            <th>Balance</th>
             <th>Options</th>
         </tr>
         @foreach (var budget in Model)
         {
             <tr class="table table-bordered">
                 <td>@budget.Id.ToString()</td>
-                <td>@budget.Month)</td>
+                <td>@budget.Month</td>
                 <td>@budget.Year</td>
                 <td>@budget.TotalRevenue</td>
                 <td>@budget.PlannedExpenses</td>
+                <td>@budget.Balance</td>
                 <td class="form-inline">
+                    <form asp-controller="Budget" asp-action="Details" asp-route-id="@budget.Id" method="get">
+                        <input type="submit" value="Details" class="btn btn-info" />
+                    </form>
                     <form asp-controller="Budget" asp-action="Update" asp-route-id="@budget.Id" method="get">
                         <input type="hidden" asp-for="@budget.Id" />
                         <input type="submit" value="Update" class="btn btn-warning" />

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using PersonalFinance.Web.Data;
 using PersonalFinance.Web.Models;
 using PersonalFinance.Web.Services.Interfaces;
@@ -18,22 +19,28 @@ namespace PersonalFinance.Web.Services
             _dataContext = dataContext;
         }
 
-        public Task<bool> CreateBudgetAsync(Budget budget)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteBudgetAsync(int? budgetId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<Budget>> GetBudgetAsync()
         {
             return await _dataContext.Budgets.OrderByDescending(o => o.Year).OrderByDescending(m => m.Month).ToListAsync();
         }
 
-        public Task<Budget> GetBudgetByIdAsync(int budgetId)
+        public async Task<Budget> GetBudgetByIdAsync(int budgetId)
+        {
+            return await _dataContext.Budgets.Include(r => r.Revenues).Include(e => e.Expenses).FirstOrDefaultAsync(x => x.Id == budgetId); ;
+        }
+
+        public async Task<bool> CreateBudgetAsync(Budget budget)
+        {
+            if (budget == null)
+            {
+                return false;
+            }
+            _dataContext.Budgets.Add(budget);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+        }
+
+        public Task<bool> DeleteBudgetAsync(int? budgetId)
         {
             throw new NotImplementedException();
         }

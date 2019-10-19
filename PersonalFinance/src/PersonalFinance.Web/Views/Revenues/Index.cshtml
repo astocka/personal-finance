@@ -27,7 +27,7 @@
         {
     <tr class="table table-bordered">
         <td>@revenue.Id.ToString()</td>
-        <td>@revenue.Date.ToString("dd-MM-yyyy")</td>
+        <td>@revenue.Date.ToShortDateString()</td>
         <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
         <td>@revenue.Description</td>
         <td>@revenue.Payer</td>
