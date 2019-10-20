@@ -49,5 +49,16 @@ namespace PersonalFinance.Web.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> CreateBudgetExpenseAsync(PlannedExpense plannedExpense)
+        {
+            if (plannedExpense == null)
+            {
+                return false;
+            }
+            _dataContext.PlannedExpenses.Add(plannedExpense);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+        }
     }
 }

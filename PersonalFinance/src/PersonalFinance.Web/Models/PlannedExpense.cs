@@ -17,5 +17,6 @@ namespace PersonalFinance.Web.Models
         [Required]
         public virtual ExpenseKind Kind { get; set; }
         public virtual DateTime? Date { get; set; }
+        public virtual string Code { get; set; }
     }
 }

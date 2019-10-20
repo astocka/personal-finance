@@ -26,6 +26,8 @@ namespace PersonalFinance.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            List<ExpenseKind> expenseKinds = Enum.GetValues(typeof(ExpenseKind)).Cast<ExpenseKind>().ToList();
+            ViewData["ExpenseKinds"] = expenseKinds;
             return View();
         }
 
@@ -40,36 +42,9 @@ namespace PersonalFinance.Web.Controllers
                     budget.TotalRevenue = (decimal)budget.TotalRevenue;
                     budget.PlannedExpenses = (decimal)budget.PlannedExpenses;
                     budget.Balance = budget.TotalRevenue - budget.PlannedExpenses;
-                    budget.Revenues = new List<PlannedRevenue>
-                    {
-                        new PlannedRevenue()
-                        {
-                            Amount = 10000,
-                            Kind = RevenueKind.Salary,
-                            Date = DateTime.Parse("2019-11-07")
-                        }
-                    };
-                    budget.Expenses = new List<PlannedExpense>
-                    {
-                        new PlannedExpense()
-                        {
-                            Amount = 1000,
-                            Kind = ExpenseKind.Rent,
-                            Date = DateTime.Parse("2019-11-08")
-                        },
-                        new PlannedExpense()
-                        {
-                            Amount = 500,
-                            Kind = ExpenseKind.Food
-                        },
-                        new PlannedExpense()
-                        {
-                            Amount = 500,
-                            Kind = ExpenseKind.Fuel
-                        },
-                    };
                     await _budgetService.CreateBudgetAsync(budget);
-                    return RedirectToAction("Index", "Budget");
+                    return NoContent();
+
                 }
                 catch (Exception)
                 {
@@ -83,6 +58,26 @@ namespace PersonalFinance.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             return View(await _budgetService.GetBudgetByIdAsync(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateExpense([Bind("Id,Amount,Kind,Date,Code")]PlannedExpense plannedExpense)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    plannedExpense.Amount = (decimal)plannedExpense.Amount;
+                    await _budgetService.CreateBudgetExpenseAsync(plannedExpense);
+                    return NoContent();
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(plannedExpense);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace PersonalFinance.Web.Services.Interfaces
         Task<bool> CreateBudgetAsync(Budget budget);
         Task<bool> UpdateBudgetAsync(Budget budgetToUpdate);
         Task<bool> DeleteBudgetAsync(int? budgetId);
+        Task<bool> CreateBudgetExpenseAsync(PlannedExpense plannedExpense);
     }
 }

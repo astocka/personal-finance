@@ -1,47 +1,81 @@
 ﻿@using System.Globalization;
+@using PersonalFinance.Web.Models;
 @model PersonalFinance.Web.Models.Budget
-
 
 <p class="display-4">Create an budget</p>
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-12">
+        <span class="h3 mb-5">Budget</span>
+        <form id="BudgetForm" class="form-inline" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Month" class="custom-control"></label>
-                <input type="number" asp-for="Month" class="form-control" />
+                <input type="number" asp-for="Month" class="form-control" placeholder="Month" />
                 <span asp-validation-for="Month" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Year" class="custom-control"></label>
-                <input type="number" asp-for="Year" class="form-control" />
+                <input type="number" asp-for="Year" class="form-control" placeholder="Year" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TotalRevenue" class="custom-control"></label>
-                <input type="text" asp-for="TotalRevenue" class="form-control" />
+                <input type="text" asp-for="TotalRevenue" class="form-control" placeholder="Total Revenue" />
                 <span asp-validation-for="TotalRevenue" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PlannedExpenses" class="custom-control"></label>
-                <input type="text" asp-for="PlannedExpenses" class="form-control" />
+                <input type="text" asp-for="PlannedExpenses" class="form-control" placeholder="Planned Expenses" />
                 <span asp-validation-for="PlannedExpenses" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="Expenses" class="custom-control"></label>
-                <input type="text" asp-for="Expenses" class="form-control" />
-                <span asp-validation-for="Expenses" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Revenues" class="custom-control"></label>
-                <input type="text" asp-for="Revenues" class="form-control" />
-                <span asp-validation-for="Revenues" class="text-danger"></span>
-            </div>*@
-
-            <a class="btn btn-dark" asp-controller="Budget" asp-action="Index">Back to list</a>
             <input type="submit" value="Save" class="btn btn-success" />
+            <input type="reset" value="Reset" class="btn btn-danger" />
+            <a class="btn btn-dark" asp-controller="Budget" asp-action="Index">Back to list</a>
         </form>
     </div>
+
 </div>
+<div class="row">
+    <div class="col-md-12">
+
+        <span class="h3 mb-5">Expenses</span>
+        @await Html.PartialAsync("_Expenses")
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Kind</th>
+                    <th>Date</th>
+                    <th>Budget</th>
+                </tr>
+            </thead>
+            <tbody id="ExpensesToAdd"></tbody>
+        </table>
+    </div>
+</div>
+
+@section AddExpenseScript {
+    <script type="text/javascript">
+        function AddExpense() {
+            var form = document.getElementById('AddExpenseForm');
+            var amount = form.elements[0].value;
+            var kind = form.elements[1].value;
+            var date = form.elements[2].value;
+            var code = form.elements[3].value;
+
+
+            var expensesTable = document.getElementById('ExpensesToAdd');
+            var row = expensesTable.insertRow(0);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = amount;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = kind;
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = date;
+             var cell4 = row.insertCell(3);
+            cell4.innerHTML = code;
+        }
+    </script>
+}

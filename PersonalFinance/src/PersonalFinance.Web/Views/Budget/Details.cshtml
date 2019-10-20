@@ -1,4 +1,5 @@
 ﻿@using System.Globalization;
+@using PersonalFinance.Web.Models;
 @model PersonalFinance.Web.Models.Budget
 
 
@@ -51,18 +52,18 @@
 
             @foreach (var revenue in @Model.Revenues)
             {
-        <tr class="table table-bordered">
-            <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
-            <td>@revenue.Kind</td>
-            @if (revenue.Date.HasValue)
-            {
-                <td>@revenue.Date.Value.ToShortDateString()</td>
-            }
-            else 
-            { 
-                <td></td>
-            }
-        </tr>
+                <tr class="table table-bordered">
+                    <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
+                    <td>@revenue.Kind</td>
+                    @if (revenue.Date.HasValue)
+                    {
+                        <td>@revenue.Date.Value.ToShortDateString()</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
             }
         </table>
     </div>
@@ -78,18 +79,18 @@
 
             @foreach (var expense in @Model.Expenses)
             {
-        <tr class="table table-bordered">
-            <td>@expense.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
-            <td>@expense.Kind</td>
-            @if (expense.Date.HasValue)
-            {
-                <td>@expense.Date.Value.ToShortDateString()</td>
-            }
-            else
-            {
-                <td></td>
-            }
-        </tr>
+                <tr class="table table-bordered">
+                    <td>@expense.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
+                    <td>@expense.Kind</td>
+                    @if (expense.Date.HasValue)
+                    {
+                        <td>@expense.Date.Value.ToShortDateString()</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
             }
         </table>
     </div>
