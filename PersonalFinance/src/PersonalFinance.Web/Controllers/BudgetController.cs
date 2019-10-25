@@ -60,9 +60,16 @@ namespace PersonalFinance.Web.Controllers
             return View(await _budgetService.GetBudgetByIdAsync(id));
         }
 
+        [HttpGet]
+        public IActionResult CreatePlannedExpense(int id)
+        {
+            ViewData["BudgetId"] = id;
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateExpense([Bind("Id,Amount,Kind,Date,Code")]PlannedExpense plannedExpense)
+        public async Task<IActionResult> CreatePlannedExpense([Bind("Id,Amount,Kind,Date,Code,BudgetId")]PlannedExpense plannedExpense)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +77,7 @@ namespace PersonalFinance.Web.Controllers
                 {
                     plannedExpense.Amount = (decimal)plannedExpense.Amount;
                     await _budgetService.CreateBudgetExpenseAsync(plannedExpense);
-                    return NoContent();
+                    return RedirectToAction("Details", "Budget", new { id = plannedExpense.BudgetId});
                 }
                 catch (Exception)
                 {

@@ -18,5 +18,6 @@ namespace PersonalFinance.Web.Models
         public virtual ExpenseKind Kind { get; set; }
         public virtual DateTime? Date { get; set; }
         public virtual string Code { get; set; }
+        public virtual int BudgetId { get; set; }
     }
 }

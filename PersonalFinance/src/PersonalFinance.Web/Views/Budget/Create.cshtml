@@ -6,9 +6,9 @@
 <hr />
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-4">
         <span class="h3 mb-5">Budget</span>
-        <form id="BudgetForm" class="form-inline" asp-action="Create">
+        <form  class="form" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input type="number" asp-for="Month" class="form-control" placeholder="Month" />
@@ -31,51 +31,4 @@
             <a class="btn btn-dark" asp-controller="Budget" asp-action="Index">Back to list</a>
         </form>
     </div>
-
 </div>
-<div class="row">
-    <div class="col-md-12">
-
-        <span class="h3 mb-5">Expenses</span>
-        @await Html.PartialAsync("_Expenses")
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th>Amount</th>
-                    <th>Kind</th>
-                    <th>Date</th>
-                    <th>Budget</th>
-                </tr>
-            </thead>
-            <tbody id="ExpensesToAdd"></tbody>
-        </table>
-    </div>
-</div>
-
-@section AddExpenseScript {
-    <script type="text/javascript">
-        function AddExpense() {
-            var form = document.getElementById('AddExpenseForm');
-            var amount = form.elements[0].value;
-            var kind = form.elements[1].value;
-            var date = form.elements[2].value;
-            var code = form.elements[3].value;
-
-
-            var expensesTable = document.getElementById('ExpensesToAdd');
-            var row = expensesTable.insertRow(0);
-            var cell1 = row.insertCell(0);
-            cell1.innerHTML = amount;
-            var cell2 = row.insertCell(1);
-            cell2.innerHTML = kind;
-            var cell3 = row.insertCell(2);
-            cell3.innerHTML = date;
-             var cell4 = row.insertCell(3);
-            cell4.innerHTML = code;
-        }
-    </script>
-}

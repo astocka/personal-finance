@@ -2,7 +2,6 @@
 @using PersonalFinance.Web.Models;
 @model PersonalFinance.Web.Models.Budget
 
-
 <p class="display-4">Budget</p>
 <hr />
 
@@ -41,7 +40,7 @@
 </div>
 
 <div class="col-12">
-    <div class="mt-3 col-6 d-lg-inline-block flo">
+    <div class="mt-3 col-6 d-lg-inline-block ">
         <p class="display-4">Revenues</p>
         <table class="table table-borderless">
             <tr class="table-danger">
@@ -68,8 +67,9 @@
         </table>
     </div>
 
-    <div class="mt-3 col-6 d-lg-inline-block float-right">
-        <p class="display-4">Expenses</p>
+    <div class="mt-3 col-6 d-lg-inline-block float-left">
+        <p class="display-4 float-left">Expenses</p>
+        <a asp-controller="Budget" asp-action="CreatePlannedExpense" asp-route-id="@Model.Id" class="btn btn-success float-right mt-4" type="submit">Add</a>
         <table class="table table-borderless">
             <tr class="table-danger">
                 <th>Amount</th>

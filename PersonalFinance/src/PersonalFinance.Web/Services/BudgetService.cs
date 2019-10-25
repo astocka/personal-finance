@@ -56,8 +56,17 @@ namespace PersonalFinance.Web.Services
             {
                 return false;
             }
-            _dataContext.PlannedExpenses.Add(plannedExpense);
-            var created = await _dataContext.SaveChangesAsync();
+            var created = 0;
+            using (var trans = await _dataContext.Database.BeginTransactionAsync())
+            {
+                _dataContext.PlannedExpenses.Add(plannedExpense);
+                _dataContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT BudgetDb.dbo.PlannedExpenses ON;");
+
+                created = await _dataContext.SaveChangesAsync();
+                _dataContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT BudgetDb.dbo.PlannedExpenses OFF;");
+
+                trans.Commit();
+            }
             return created > 0;
         }
     }
