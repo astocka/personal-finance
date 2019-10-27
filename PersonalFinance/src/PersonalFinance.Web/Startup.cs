@@ -66,6 +66,10 @@ namespace PersonalFinance.Web
                    template: "{controller=Budget}/{budgetId?}/{action=Index}/{id?}");
 
                 routes.MapRoute(
+                  name: "budgetDetails",
+                  template: "{controller=Budget}/{action=Index}/{id?}");
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

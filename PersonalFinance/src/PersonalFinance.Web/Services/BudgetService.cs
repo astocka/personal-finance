@@ -56,9 +56,15 @@ namespace PersonalFinance.Web.Services
             return deleted > 0;
         }
 
-        public Task<bool> UpdateBudgetAsync(Budget budgetToUpdate)
+        public async Task<bool> UpdateBudgetAsync(Budget budgetToUpdate)
         {
-            throw new NotImplementedException();
+            if (budgetToUpdate == null)
+            {
+                return false;
+            }
+            _dataContext.Update(budgetToUpdate);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
 
         public async Task<bool> CreateBudgetExpenseAsync(int budgetId, PlannedExpense plannedExpense)

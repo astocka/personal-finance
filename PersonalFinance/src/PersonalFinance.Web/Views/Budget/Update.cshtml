@@ -1,0 +1,34 @@
+﻿@using System.Globalization;
+@using PersonalFinance.Web.Models;
+@model PersonalFinance.Web.Models.Budget
+
+<p class="display-4">Update the budget</p>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="form" asp-action="Update" asp-route-budgetId="@Model.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Id" />
+            <div class="form-group">
+                <input type="number" asp-for="Month" class="form-control" placeholder="Month" />
+                <span asp-validation-for="Month" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="number" asp-for="Year" class="form-control" placeholder="Year" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="text" asp-for="TotalRevenue" class="form-control" placeholder="Total Revenue" />
+                <span asp-validation-for="TotalRevenue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="text" asp-for="PlannedExpenses" class="form-control" placeholder="Planned Expenses" />
+                <span asp-validation-for="PlannedExpenses" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Save" class="btn btn-warning" />
+            <input type="reset" value="Reset" class="btn btn-danger" />
+            <a class="btn btn-dark" asp-controller="Budget" asp-action="Index">Back to list</a>
+        </form>
+    </div>
+</div>

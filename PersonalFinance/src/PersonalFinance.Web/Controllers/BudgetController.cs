@@ -61,6 +61,43 @@ namespace PersonalFinance.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Update(int? budgetId)
+        {
+            if (budgetId == null)
+            {
+                return NotFound();
+            }
+            Budget budget = await _budgetService.GetBudgetByIdAsync((int)budgetId);
+
+            if (budget == null)
+            {
+                return NotFound();
+            }
+
+            return View(budget);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update([Bind("Id,Month,Year,TotalRevenue,PlannedExpenses")]Budget budget)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    budget.Balance = budget.TotalRevenue - budget.PlannedExpenses;
+                    await _budgetService.UpdateBudgetAsync(budget);
+                    return RedirectToAction("Index", "Budget");
+                }
+                catch(Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(budget);
+        }
+
+        [HttpGet]
         [Route("Budget/{budgetId}/CreatePlannedExpense")]
         public IActionResult CreatePlannedExpense(int budgetId)
         {
