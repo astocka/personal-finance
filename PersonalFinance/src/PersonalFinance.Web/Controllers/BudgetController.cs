@@ -69,6 +69,18 @@ namespace PersonalFinance.Web.Controllers
         }
 
         [HttpPost]
+        [Route("Budget/Delete/{budgetId}")]
+        public async Task<IActionResult> Delete(int? budgetId)
+        {
+            if (budgetId == null)
+            {
+                return NotFound();
+            }
+            await _budgetService.DeleteBudgetAsync(budgetId);
+            return RedirectToAction("Index", "Budget");
+        }
+
+        [HttpPost]
         [Route("Budget/{budgetId}/CreatePlannedExpense")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePlannedExpense(int budgetId, [Bind("Id,Amount,Kind,Date")]PlannedExpense plannedExpense)

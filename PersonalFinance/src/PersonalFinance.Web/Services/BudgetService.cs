@@ -24,9 +24,13 @@ namespace PersonalFinance.Web.Services
             return await _dataContext.Budgets.OrderByDescending(o => o.Year).OrderByDescending(m => m.Month).ToListAsync();
         }
 
-        public async Task<Budget> GetBudgetByIdAsync(int budgetId)
+        public async Task<Budget> GetBudgetByIdAsync(int? budgetId)
         {
-            return await _dataContext.Budgets.Include(r => r.Revenues).Include(e => e.Expenses).FirstOrDefaultAsync(x => x.Id == budgetId); ;
+            if (budgetId == null)
+            {
+                return new Budget();
+            }
+            return await _dataContext.Budgets.Include(r => r.Revenues).Include(e => e.Expenses).FirstOrDefaultAsync(x => x.Id == budgetId);
         }
 
         public async Task<bool> CreateBudgetAsync(Budget budget)
@@ -40,9 +44,16 @@ namespace PersonalFinance.Web.Services
             return created > 0;
         }
 
-        public Task<bool> DeleteBudgetAsync(int? budgetId)
+        public async Task<bool> DeleteBudgetAsync(int? budgetId)
         {
-            throw new NotImplementedException();
+            if (budgetId == null)
+            {
+                return false;
+            }
+            var budget = await GetBudgetByIdAsync(budgetId);
+            _dataContext.Remove(budget);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
         }
 
         public Task<bool> UpdateBudgetAsync(Budget budgetToUpdate)
