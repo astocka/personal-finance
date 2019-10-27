@@ -50,7 +50,7 @@ namespace PersonalFinance.Web.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> CreateBudgetExpenseAsync(PlannedExpense plannedExpense)
+        public async Task<bool> CreateBudgetExpenseAsync(int budgetId, PlannedExpense plannedExpense)
         {
             if (plannedExpense == null)
             {
@@ -59,15 +59,40 @@ namespace PersonalFinance.Web.Services
             var created = 0;
             using (var trans = await _dataContext.Database.BeginTransactionAsync())
             {
+                var budget = _dataContext.Budgets.FirstOrDefault(x => x.Id == budgetId);
+                plannedExpense.Budget = budget;
+
+
                 _dataContext.PlannedExpenses.Add(plannedExpense);
-                _dataContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT BudgetDb.dbo.PlannedExpenses ON;");
+                budget.Expenses.Add(plannedExpense);
 
                 created = await _dataContext.SaveChangesAsync();
-                _dataContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT BudgetDb.dbo.PlannedExpenses OFF;");
 
                 trans.Commit();
             }
             return created > 0;
+        }
+
+        public async Task<bool> CreateBudgetRevenueAsync(int budgetId, PlannedRevenue plannedRevenue)
+        {
+            if (plannedRevenue == null)
+            {
+                return false;
+            }
+            var createdRevenue = 0;
+            using (var trans = await _dataContext.Database.BeginTransactionAsync())
+            {
+                var budget = _dataContext.Budgets.FirstOrDefault(x => x.Id == budgetId);
+                plannedRevenue.Budget = budget;
+
+                _dataContext.PlannedRevenues.Add(plannedRevenue);
+                budget.Revenues.Add(plannedRevenue);
+
+                createdRevenue = await _dataContext.SaveChangesAsync();
+
+                trans.Commit();
+            }
+            return createdRevenue > 0;
         }
     }
 }

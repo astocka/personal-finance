@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalFinance.Web.Data;
 
 namespace PersonalFinance.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191026125841_DeleteCodeProperty")]
+    partial class DeleteCodeProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,7 +244,7 @@ namespace PersonalFinance.Web.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("BudgetId");
+                    b.Property<int>("BudgetId");
 
                     b.Property<DateTime?>("Date");
 
@@ -264,7 +266,7 @@ namespace PersonalFinance.Web.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("BudgetId");
+                    b.Property<int>("BudgetId");
 
                     b.Property<DateTime?>("Date");
 
@@ -347,16 +349,18 @@ namespace PersonalFinance.Web.Migrations
 
             modelBuilder.Entity("PersonalFinance.Web.Models.PlannedExpense", b =>
                 {
-                    b.HasOne("PersonalFinance.Web.Models.Budget", "Budget")
+                    b.HasOne("PersonalFinance.Web.Models.Budget")
                         .WithMany("Expenses")
-                        .HasForeignKey("BudgetId");
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PersonalFinance.Web.Models.PlannedRevenue", b =>
                 {
-                    b.HasOne("PersonalFinance.Web.Models.Budget", "Budget")
+                    b.HasOne("PersonalFinance.Web.Models.Budget")
                         .WithMany("Revenues")
-                        .HasForeignKey("BudgetId");
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

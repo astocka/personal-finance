@@ -61,23 +61,25 @@ namespace PersonalFinance.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreatePlannedExpense(int id)
+        [Route("Budget/{budgetId}/CreatePlannedExpense")]
+        public IActionResult CreatePlannedExpense(int budgetId)
         {
-            ViewData["BudgetId"] = id;
+            ViewData["BudgetId"] = budgetId;
             return View();
         }
 
         [HttpPost]
+        [Route("Budget/{budgetId}/CreatePlannedExpense")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePlannedExpense([Bind("Id,Amount,Kind,Date,Code,BudgetId")]PlannedExpense plannedExpense)
+        public async Task<IActionResult> CreatePlannedExpense(int budgetId, [Bind("Id,Amount,Kind,Date")]PlannedExpense plannedExpense)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     plannedExpense.Amount = (decimal)plannedExpense.Amount;
-                    await _budgetService.CreateBudgetExpenseAsync(plannedExpense);
-                    return RedirectToAction("Details", "Budget", new { id = plannedExpense.BudgetId});
+                    await _budgetService.CreateBudgetExpenseAsync(budgetId, plannedExpense);
+                    return RedirectToAction("Details", "Budget", new { id = budgetId });
                 }
                 catch (Exception)
                 {
@@ -85,6 +87,35 @@ namespace PersonalFinance.Web.Controllers
                 }
             }
             return View(plannedExpense);
+        }
+
+        [HttpGet]
+        [Route("Budget/{budgetId}/CreatePlannedRevenue")]
+        public IActionResult CreatePlannedRevenue(int budgetId)
+        {
+            ViewData["BudgetIdR"] = budgetId;
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Budget/{budgetId}/CreatePlannedRevenue")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePlannedRevenue(int budgetId, [Bind("Id,Amount,Kind,Date")]PlannedRevenue plannedRevenue)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    plannedRevenue.Amount = (decimal)plannedRevenue.Amount;
+                    await _budgetService.CreateBudgetRevenueAsync(budgetId, plannedRevenue);
+                    return RedirectToAction("Details", "Budget", new { id = budgetId });
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(plannedRevenue);
         }
     }
 }

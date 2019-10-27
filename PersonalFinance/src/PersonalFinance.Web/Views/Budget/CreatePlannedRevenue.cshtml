@@ -1,20 +1,18 @@
 ﻿@using PersonalFinance.Web.Models
-@model PersonalFinance.Web.Models.PlannedExpense
+@model PersonalFinance.Web.Models.PlannedRevenue
 
 <div class="row">
     <div class="col-md-4">
-        <form class="form" asp-controller="Budget" asp-action="CreatePlannedExpense" asp-route-budgetId="@ViewData["BudgetId"]" method="post">
+        <form class="form" asp-controller="Budget" asp-action="CreatePlannedRevenue" asp-route-budgetId="@ViewData["BudgetIdR"]" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Amount" class="custom-control"></label>
-            </div>
-            <div class="form-group">
                 <input type="text" asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Kind" class="custom-control"></label>
-                <select asp-for="Kind" asp-items="Html.GetEnumSelectList<ExpenseKind>()"></select>
+                <select asp-for="Kind" asp-items="Html.GetEnumSelectList<RevenueKind>()"></select>
                 <span asp-validation-for="Kind" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,7 +22,7 @@
             </div>
             <input type="submit" value="Save" class="btn btn-warning" />
             <input type="reset" value="Reset" class="btn btn-danger" />
-            <a class="btn btn-dark" asp-controller="Budget" asp-action="Details" asp-route-budgetId="@ViewData["BudgetId"]">Back</a>
+            <a class="btn btn-dark" asp-controller="Budget" asp-action="Details" asp-route-budgetId="@ViewData["BudgetIdR"]">Back</a>
         </form>
     </div>
 </div>
