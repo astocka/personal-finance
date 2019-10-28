@@ -17,6 +17,8 @@ namespace PersonalFinance.Web.Models
         [Required]
         public virtual ExpenseKind Kind { get; set; }
         public virtual DateTime? Date { get; set; }
+        public virtual bool IsPaid { get; set; }
+        public virtual DateTime? PaidDate { get; set; }
         public virtual int BudgetId { get; set; }
         public virtual Budget Budget { get; set; }
 
