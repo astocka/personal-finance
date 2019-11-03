@@ -131,5 +131,25 @@ namespace PersonalFinance.Web.Services
             var updated = await _dataContext.SaveChangesAsync();
             return updated > 0;
         }
+
+        public async Task<PlannedRevenue> GetPlannedRevenueByIdAsync(int? plannedRevenueId)
+        {
+            if (plannedRevenueId == null)
+            {
+                return new PlannedRevenue();
+            }
+            return await _dataContext.PlannedRevenues.Include(x => x.Budget).FirstOrDefaultAsync(x => x.Id == plannedRevenueId);
+        }
+
+        public async Task<bool> UpdatePlannedRevenueAsync(PlannedRevenue plannedRevenue)
+        {
+            if (plannedRevenue == null)
+            {
+                return false;
+            }
+            _dataContext.PlannedRevenues.Update(plannedRevenue);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
+        }
     }
 }

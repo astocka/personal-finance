@@ -218,5 +218,48 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(plannedExpense);
         }
+
+        [HttpGet]
+        [Route("Budget/UpdatePlannedRevenue/{plannedRevenueId}")]
+        public async Task<IActionResult> UpdatePlannedRevenue(int? plannedRevenueId)
+        {
+            if (plannedRevenueId == null)
+            {
+                return NotFound();
+            }
+
+            PlannedRevenue plannedRevenue = await _budgetService.GetPlannedRevenueByIdAsync((int)plannedRevenueId);
+
+            if (plannedRevenue == null)
+            {
+                return NotFound();
+            }
+
+            return View(plannedRevenue);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Budget/UpdatePlannedRevenue/{plannedRevenueId}")]
+        public async Task<IActionResult> UpdatePlannedRevenue([Bind("Id,Amount,Kind,Date,IsReceived,ReceivedDate,BudgetId")]PlannedRevenue plannedRevenue)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if ((plannedRevenue.IsReceived && plannedRevenue.ReceivedDate == null) || (plannedRevenue.IsReceived == false && plannedRevenue.ReceivedDate != null))
+                    {
+                        return View(plannedRevenue);
+                    }
+                    await _budgetService.UpdatePlannedRevenueAsync(plannedRevenue);
+                    return RedirectToAction("Details", "Budget", new { budgetId = plannedRevenue.BudgetId });
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(plannedRevenue);
+        }
     }
 }

@@ -54,27 +54,35 @@
 
             @foreach (var revenue in @Model.Revenues)
             {
-                <tr class="table table-bordered">
-                    <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
-                    <td>@revenue.Kind</td>
-                    @if (revenue.Date.HasValue)
-                    {
-                        <td>@revenue.Date.Value.ToShortDateString()</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                    <td>@revenue.IsReceived</td>
-                    @if (revenue.IsReceived)
-                    {
-                        <td>@revenue.ReceivedDate.Value.ToShortDateString()</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                </tr>
+        <tr class="table table-bordered">
+            <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
+            <td>@revenue.Kind</td>
+            @if (revenue.Date.HasValue)
+            {
+                <td>@revenue.Date.Value.ToShortDateString()</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td>@revenue.IsReceived</td>
+            @if (revenue.IsReceived)
+            {
+                <td>@revenue.ReceivedDate.Value.ToShortDateString()</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td class="form-inline">
+                <form asp-controller="Budget" asp-action="UpdatePlannedRevenue" asp-route-plannedRevenueId="@revenue.Id" method="get">
+                    <input type="hidden" asp-for="@revenue.Id" />
+                    <button type="submit" class="btn btn-warning">
+                        <i class="material-icons">refresh</i>
+                    </button>
+                </form>
+            </td>
+        </tr>
             }
         </table>
     </div>
