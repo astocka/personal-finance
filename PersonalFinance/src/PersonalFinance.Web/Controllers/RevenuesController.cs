@@ -110,5 +110,24 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(revenue);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string search)
+        {
+            if (search == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var revenues = await _revenueService.SearchRevenuesAsync(search);
+                return View(revenues);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }

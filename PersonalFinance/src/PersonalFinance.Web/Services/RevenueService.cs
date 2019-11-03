@@ -102,5 +102,11 @@ namespace PersonalFinance.Web.Services
             var updated = await _dataContext.SaveChangesAsync();
             return updated > 0;
         }
+
+        public async Task<List<Revenue>> SearchRevenuesAsync(string search)
+        {
+            var searchRevenues = await _dataContext.Revenues.Where(x => x.Description.Contains(search) || x.Notes.Contains(search) || x.Payer.Contains(search)).ToListAsync();
+            return searchRevenues;
+        }
     }
 }

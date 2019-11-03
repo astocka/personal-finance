@@ -9,10 +9,15 @@
     <a class="btn btn-info" asp-controller="Revenues" asp-action="ImportRevenues" type="submit">Import revenues</a>
     <span class="ml-2 mt-1 font-weight-bold text-danger"> @TempData["RevenuesExist"]</span>
 </div>
-
+<div>
+    <form class="form-inline mt-2 my-2" asp-controller="Revenues" asp-action="Search" method="get">
+        <input class="form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</div>
 <br />
 
-<div class="mt-3">
+<div class="mt-1">
     <table class="table table-borderless">
         <tr class="table-dark">
             <th>Id</th>
