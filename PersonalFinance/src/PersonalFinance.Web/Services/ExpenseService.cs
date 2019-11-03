@@ -101,6 +101,11 @@ namespace PersonalFinance.Web.Services
             return updated > 0;
         }
 
-      
+        public async Task<List<Expense>> SearchExpensesAsync(string search)
+        {
+            var searchExpenses = await _dataContext.Expenses.Where(x => x.Description.Contains(search) || x.Notes.Contains(search) || x.Payee.Contains(search)).ToListAsync();
+            return searchExpenses;
+        }
+
     }
 }

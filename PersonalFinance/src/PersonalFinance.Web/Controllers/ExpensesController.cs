@@ -108,5 +108,25 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(expense);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string search)
+        {
+            if (search == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var expenses = await _expenseService.SearchExpensesAsync(search);
+                return View(expenses);
+            }
+            catch(Exception)
+            {
+                return NotFound();
+            }
+        }
+
     }
 }
