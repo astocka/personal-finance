@@ -29,7 +29,7 @@
                 <td>@budget.PlannedExpenses</td>
                 <td>@budget.Balance</td>
                 <td class="form-inline">
-                    <form asp-controller="Budget" asp-action="Details" asp-route-id="@budget.Id" method="get">
+                    <form asp-controller="Budget" asp-action="Details" asp-route-budgetId="@budget.Id" method="get">
                         <input type="submit" value="Details" class="btn btn-info" />
                     </form>
                     <form asp-controller="Budget" asp-action="Update" asp-route-budgetId="@budget.Id" method="get">

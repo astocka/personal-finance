@@ -1,0 +1,42 @@
+﻿@using PersonalFinance.Web.Models
+@model PersonalFinance.Web.Models.PlannedExpense
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="form" asp-controller="Budget" asp-action="UpdatePlannedExpense" asp-route-plannedExpenseId="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Id" />
+            <input type="hidden" asp-for="@Model.BudgetId" />
+            <div class="form-group">
+                <label asp-for="Amount" class="custom-control"></label>
+            </div>
+            <div class="form-group">
+                <input type="text" asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kind" class="custom-control"></label>
+                <select asp-for="Kind" asp-items="Html.GetEnumSelectList<ExpenseKind>()"></select>
+                <span asp-validation-for="Kind" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="custom-control"></label>
+                <input type="date" asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsPaid" class="custom-control"></label>
+                <input type="checkbox" asp-for="IsPaid" class="form-control" />
+                <span asp-validation-for="IsPaid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaidDate" class="custom-control"></label>
+                <input type="date" asp-for="PaidDate" class="form-control" />
+                <span asp-validation-for="PaidDate" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Save" class="btn btn-warning" />
+            <input type="reset" value="Reset" class="btn btn-danger" />
+            <a class="btn btn-dark" asp-controller="Budget" asp-action="Details" asp-route-id="@Model.BudgetId">Back</a>
+        </form>
+    </div>
+</div>

@@ -55,9 +55,10 @@ namespace PersonalFinance.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        [Route("Budget/Details/{budgetId}")]
+        public async Task<IActionResult> Details(int budgetId)
         {
-            return View(await _budgetService.GetBudgetByIdAsync(id));
+            return View(await _budgetService.GetBudgetByIdAsync(budgetId));
         }
 
         [HttpGet]
@@ -132,7 +133,7 @@ namespace PersonalFinance.Web.Controllers
                         plannedExpense.PaidDate = null;
                     }
                     await _budgetService.CreateBudgetExpenseAsync(budgetId, plannedExpense);
-                    return RedirectToAction("Details", "Budget", new { id = budgetId });
+                    return RedirectToAction("Details", "Budget", new { budgetId = budgetId });
                 }
                 catch (Exception)
                 {
@@ -165,7 +166,7 @@ namespace PersonalFinance.Web.Controllers
                         plannedRevenue.ReceivedDate = null;
                     }
                     await _budgetService.CreateBudgetRevenueAsync(budgetId, plannedRevenue);
-                    return RedirectToAction("Details", "Budget", new { id = budgetId });
+                    return RedirectToAction("Details", "Budget", new { budgetId = budgetId });
                 }
                 catch (Exception)
                 {
@@ -173,6 +174,49 @@ namespace PersonalFinance.Web.Controllers
                 }
             }
             return View(plannedRevenue);
+        }
+
+        [HttpGet]
+        [Route("Budget/UpdatePlannedExpense/{plannedExpenseId}")]
+        public async Task<IActionResult> UpdatePlannedExpense(int? plannedExpenseId)
+        {
+            if (plannedExpenseId == null)
+            {
+                return NotFound();
+            }
+
+            PlannedExpense plannedExpense = await _budgetService.GetPlannedExpenseByIdAsync((int)plannedExpenseId);
+
+            if (plannedExpense == null)
+            {
+                return NotFound();
+            }
+
+            return View(plannedExpense);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Budget/UpdatePlannedExpense/{plannedExpenseId}")]
+        public async Task<IActionResult> UpdatePlannedExpense([Bind("Id,Amount,Kind,Date,IsPaid,PaidDate,BudgetId")]PlannedExpense plannedExpense)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if ((plannedExpense.IsPaid && plannedExpense.PaidDate == null) || (plannedExpense.IsPaid == false && plannedExpense.PaidDate != null))
+                    {
+                        return View(plannedExpense);
+                    }
+                    await _budgetService.UpdatePlannedExpenseAsync(plannedExpense);
+                    return RedirectToAction("Details", "Budget", new { budgetId = plannedExpense.BudgetId });
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(plannedExpense);
         }
     }
 }
