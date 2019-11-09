@@ -18,9 +18,15 @@ namespace PersonalFinance.Web.Services.Interfaces
             _dataService = dataService;
         }
 
-        public Task<bool> CreateBillAsync(Bill bill)
+        public async Task<bool> CreateBillAsync(Bill bill)
         {
-            throw new NotImplementedException();
+            if (bill == null)
+            {
+                return false;
+            }
+            _dataService.Bills.Add(bill);
+            var created = await _dataService.SaveChangesAsync();
+            return created > 0;
         }
 
         public Task<bool> DeleteBillAsync(int? billId)
