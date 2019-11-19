@@ -51,5 +51,42 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(bill);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Bill bill = await _billService.GetBillByIdAsync((int)id);
+
+            if (bill == null)
+            {
+                return NotFound();
+            }
+
+            return View(bill);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update([Bind("Id,Amount,Date,DueDate,PaidDate,IsPaid,Notes")]Bill bill)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bill.Amount = (decimal)bill.Amount;
+                    await _billService.UpdateBillAsync(bill);
+                    return RedirectToAction("Index", "Bills");
+                }
+                catch (Exception)
+                {
+                    return NotFound();
+                }
+            }
+            return View(bill);
+        }
     }
 }

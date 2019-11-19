@@ -11,11 +11,11 @@ namespace PersonalFinance.Web.Services.Interfaces
     public class BillService : IBillService
     {
 
-        private readonly DataContext _dataService;
+        private readonly DataContext _dataContext;
 
         public BillService(DataContext dataService)
         {
-            _dataService = dataService;
+            _dataContext = dataService;
         }
 
         public async Task<bool> CreateBillAsync(Bill bill)
@@ -24,8 +24,8 @@ namespace PersonalFinance.Web.Services.Interfaces
             {
                 return false;
             }
-            _dataService.Bills.Add(bill);
-            var created = await _dataService.SaveChangesAsync();
+            _dataContext.Bills.Add(bill);
+            var created = await _dataContext.SaveChangesAsync();
             return created > 0;
         }
 
@@ -34,19 +34,29 @@ namespace PersonalFinance.Web.Services.Interfaces
             throw new NotImplementedException();
         }
 
-        public Task<Bill> GetBillByIdAsync(int? billId)
+        public async Task<Bill> GetBillByIdAsync(int? billId)
         {
-            throw new NotImplementedException();
+          if (billId == null)
+            {
+                return new Bill();
+            }
+            return await _dataContext.Bills.FirstOrDefaultAsync(x => x.Id == billId);
         }
 
         public async Task<List<Bill>> GetBillsAsync()
         {
-            return await _dataService.Bills.ToListAsync();
+            return await _dataContext.Bills.ToListAsync();
         }
 
-        public Task<bool> UpdateBillAsync(Bill billToUpdate)
+        public async Task<bool> UpdateBillAsync(Bill billToUpdate)
         {
-            throw new NotImplementedException();
+            if (billToUpdate == null)
+            {
+                return false;
+            }
+            _dataContext.Update(billToUpdate);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
     }
 }
