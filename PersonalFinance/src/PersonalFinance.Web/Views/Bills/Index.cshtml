@@ -22,42 +22,42 @@
         </tr>
         @foreach (var bill in Model)
         {
-    <tr class="table table-bordered">
-        <td>@bill.Id.ToString()</td>
-        @if (bill.Date.HasValue)
-        {
-            <td>@bill.Date.Value.ToShortDateString()</td>
-        }
-        else
-        {
-            <td></td>
-        }
-        <td>@bill.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
-        <td>@bill.Notes</td>
-        <td>@bill.DueDate.ToShortDateString()</td>
-        <td>@bill.IsPaid</td>
-        @if (bill.PaidDate.HasValue)
-        {
-            <td>@bill.PaidDate.Value.ToShortDateString()</td>
-        }
-        else
-        {
-            <td></td>
-        }
-    <td class="form-inline">
-        <form asp-controller="Bill" asp-action="Details" asp-route-budgetId="@bill.Id" method="get">
-            <input type="submit" value="Details" class="btn btn-info" />
-        </form>
-        <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-            <input type="hidden" asp-for="@bill.Id" />
-            <input type="submit" value="Update" class="btn btn-warning" />
-        </form>
-        <form asp-controller="Bill" asp-action="Delete" asp-route-budgetId="@bill.Id" method="post">
-            <input type="hidden" asp-for="@bill.Id" />
-            <input type="submit" value="Delete" class="btn btn-danger" />
-        </form>
-    </td>
-    </tr>
+            <tr class="table table-bordered">
+                <td>@bill.Id.ToString()</td>
+                @if (bill.Date.HasValue)
+                {
+                    <td>@bill.Date.Value.ToShortDateString()</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>@bill.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
+                <td>@bill.Notes</td>
+                <td>@bill.DueDate.ToShortDateString()</td>
+                <td>@bill.IsPaid</td>
+                @if (bill.PaidDate.HasValue)
+                {
+                    <td>@bill.PaidDate.Value.ToShortDateString()</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td class="form-inline">
+                    <form asp-controller="Bill" asp-action="Details" asp-route-budgetId="@bill.Id" method="get">
+                        <input type="submit" value="Details" class="btn btn-info" />
+                    </form>
+                    <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
+                        <input type="hidden" asp-for="@bill.Id" />
+                        <input type="submit" value="Update" class="btn btn-warning" />
+                    </form>
+                    <form asp-controller="Bills" asp-action="Delete" asp-route-Id="@bill.Id" method="post">
+                        <input type="hidden" asp-for="@bill.Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
         }
     </table>
 </div>

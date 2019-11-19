@@ -29,9 +29,17 @@ namespace PersonalFinance.Web.Services.Interfaces
             return created > 0;
         }
 
-        public Task<bool> DeleteBillAsync(int? billId)
+        public async Task<bool> DeleteBillAsync(int? billId)
         {
-            throw new NotImplementedException();
+            if (billId == null)
+            {
+                return false;
+            }
+
+            var bill = await GetBillByIdAsync(billId);
+            _dataContext.Remove(bill);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
         }
 
         public async Task<Bill> GetBillByIdAsync(int? billId)

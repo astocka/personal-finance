@@ -88,5 +88,16 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(bill);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            } 
+            await _billService.DeleteBillAsync(id);
+            return RedirectToAction("Index", "Bills");
+        }
     }
 }
