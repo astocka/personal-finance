@@ -10,7 +10,6 @@ namespace PersonalFinance.Web.Services.Interfaces
 {
     public class BillService : IBillService
     {
-
         private readonly DataContext _dataContext;
 
         public BillService(DataContext dataService)

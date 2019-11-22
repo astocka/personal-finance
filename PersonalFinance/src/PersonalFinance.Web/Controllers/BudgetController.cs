@@ -261,5 +261,18 @@ namespace PersonalFinance.Web.Controllers
             }
             return View(plannedRevenue);
         }
+
+        [HttpPost]
+        [Route("Budget/DeletePlannedRevenue/{plannedRevenueId}")]
+        public async Task<IActionResult> DeletePlannedRevenue(int? plannedRevenueId)
+        {
+            if (plannedRevenueId == null)
+            {
+                return NotFound();
+            }
+            await _budgetService.DeletePlannedRevenueAsync(plannedRevenueId);
+            return RedirectToAction("Index", "Budget");
+            //return RedirectToAction("Details", "Budget", new { budgetId = budgetId });
+        }
     }
 }

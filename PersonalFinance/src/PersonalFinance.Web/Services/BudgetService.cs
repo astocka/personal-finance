@@ -56,6 +56,7 @@ namespace PersonalFinance.Web.Services
             return deleted > 0;
         }
 
+
         public async Task<bool> UpdateBudgetAsync(Budget budgetToUpdate)
         {
             if (budgetToUpdate == null)
@@ -151,5 +152,18 @@ namespace PersonalFinance.Web.Services
             var updated = await _dataContext.SaveChangesAsync();
             return updated > 0;
         }
+
+        public async Task<bool> DeletePlannedRevenueAsync(int? plannedRevenueId)
+        {
+            if (plannedRevenueId == null)
+            {
+                return false;
+            }
+            var plannedRevenue = await GetPlannedRevenueByIdAsync(plannedRevenueId);
+            _dataContext.Remove(plannedRevenue);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
+        }
+
     }
 }

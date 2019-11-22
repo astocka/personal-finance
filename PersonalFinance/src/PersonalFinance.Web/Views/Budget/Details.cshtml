@@ -74,14 +74,20 @@
             {
                 <td></td>
             }
-            <td class="form-inline">
-                <form asp-controller="Budget" asp-action="UpdatePlannedRevenue" asp-route-plannedRevenueId="@revenue.Id" method="get">
-                    <input type="hidden" asp-for="@revenue.Id" />
-                    <button type="submit" class="btn btn-warning">
-                        <i class="material-icons">refresh</i>
-                    </button>
-                </form>
-            </td>
+        <td class="form-inline">
+            <form asp-controller="Budget" asp-action="UpdatePlannedRevenue" asp-route-plannedRevenueId="@revenue.Id" method="get">
+                <input type="hidden" asp-for="@revenue.Id" />
+                <button type="submit" class="btn btn-warning">
+                    <i class="material-icons">refresh</i>
+                </button>
+            </form>
+            <form asp-controller="Budget" asp-action="DeletePlannedRevenue" asp-route-plannedRevenueId="@revenue.Id" method="post">
+                <input type="hidden" asp-for="@revenue.Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="material-icons">cancel</i>
+                </button>
+            </form>
+        </td>
         </tr>
             }
         </table>

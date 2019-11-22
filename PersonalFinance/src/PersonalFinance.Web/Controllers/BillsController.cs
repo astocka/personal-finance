@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalFinance.Web.Models;
 using PersonalFinance.Web.Services.Interfaces;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace PersonalFinance.Web.Controllers
 {
     public class BillsController : Controller
@@ -47,8 +45,8 @@ namespace PersonalFinance.Web.Controllers
                 {
                     return NotFound();
                 }
-
             }
+
             return View(bill);
         }
 
