@@ -165,5 +165,16 @@ namespace PersonalFinance.Web.Services
             return deleted > 0;
         }
 
+        public async Task<bool> DeletePlannedExpenseAsync(int? plannedExpenseId)
+        {
+            if (plannedExpenseId == null)
+            {
+                return false;
+            }
+            var plannedExpense = await GetPlannedExpenseByIdAsync(plannedExpenseId);
+            _dataContext.Remove(plannedExpense);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
+        }
     }
 }

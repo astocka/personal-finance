@@ -128,14 +128,20 @@
                     {
                         <td></td>
                     }
-                    <td class="form-inline">
-                        <form asp-controller="Budget" asp-action="UpdatePlannedExpense" asp-route-plannedExpenseId="@expense.Id" method="get">
-                            <input type="hidden" asp-for="@expense.Id" />
-                            <button type="submit" class="btn btn-warning">
-                                <i class="material-icons">refresh</i>
-                            </button>
-                        </form>
-                    </td>
+                <td class="form-inline">
+                    <form asp-controller="Budget" asp-action="UpdatePlannedExpense" asp-route-plannedExpenseId="@expense.Id" method="get">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <button type="submit" class="btn btn-warning">
+                            <i class="material-icons">refresh</i>
+                        </button>
+                    </form>
+                    <form asp-controller="Budget" asp-action="DeletePlannedExpense" asp-route-plannedExpenseId="@expense.Id" method="post">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="material-icons">cancel</i>
+                        </button>
+                    </form>
+                </td>
 
                 </tr>
             }

@@ -274,5 +274,17 @@ namespace PersonalFinance.Web.Controllers
             return RedirectToAction("Index", "Budget");
             //return RedirectToAction("Details", "Budget", new { budgetId = budgetId });
         }
+
+        [HttpPost]
+        [Route("Budget/DeletePlannedExpense/{plannedExpenseId}")]
+        public async Task<IActionResult> DeletePlannedExpense(int? plannedExpenseId)
+        {
+            if (plannedExpenseId == null)
+            {
+                return NotFound();
+            }
+            await _budgetService.DeletePlannedExpenseAsync(plannedExpenseId);
+            return RedirectToAction("Index", "Budget");
+        }
     }
 }
