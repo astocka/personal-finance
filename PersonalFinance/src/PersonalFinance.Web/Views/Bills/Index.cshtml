@@ -1,6 +1,9 @@
 ﻿@using System.Globalization;
 @model List<PersonalFinance.Web.Models.Bill>
 
+@{
+    List<PersonalFinance.Web.Models.Bill> unpaid = Model.Where(x => x.IsPaid == false && x.DueDate < DateTime.Now).AsQueryable().ToList();
+}
 
 <p class="display-4">Bills</p>
 <hr />
@@ -13,6 +16,45 @@
 </div>
 
 <div class="mt-3">
+    <p class="font-weight-bold">Unpaid</p>
+    <table class="table table-borderless">
+        <tr class="table-dark">
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Notes</th>
+            <th>Due date</th>
+            <th>Options</th>
+        </tr>
+        @if (unpaid.Count == 0)
+        {
+            <tr>
+                <td>There's no unpaid bills :)</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var bill in unpaid)
+            {
+                <tr class="table table-bordered">
+                    <td>@bill.Date.Value.ToShortDateString()</td>
+                    <td class="text-danger font-weight-bold">@bill.Amount</td>
+                    <td>@bill.Notes</td>
+                    <td class="text-danger font-weight-bold">@bill.DueDate</td>
+                    <td class="form-inline">
+                        <form asp-controller="Bills" asp-action="Pay" asp-route-Id="@bill.Id" method="post">
+                            <input type="hidden" asp-for="@bill.Id" />
+                            <input type="submit" value="Pay" class="btn btn-success" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+</div>
+
+<div class="mt-3">
+    <p class="font-weight-bold">All</p>
     <table class="table table-borderless">
         <tr class="table-dark">
             <th>Id</th>
@@ -38,7 +80,14 @@
                 }
                 <td>@bill.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
                 <td>@bill.Notes</td>
-                <td>@bill.DueDate.ToShortDateString()</td>
+                @if (DateTime.Now > @bill.DueDate && bill.IsPaid == false)
+                {
+                    <td class="text-danger font-weight-bold">@bill.DueDate.ToShortDateString()</td>
+                }
+                else
+                {
+                    <td>@bill.DueDate.ToShortDateString()</td>
+                }
                 <td>@bill.IsPaid</td>
                 @if (bill.PaidDate.HasValue)
                 {
@@ -49,9 +98,6 @@
                     <td></td>
                 }
                 <td class="form-inline">
-                    <form asp-controller="Bill" asp-action="Details" asp-route-budgetId="@bill.Id" method="get">
-                        <input type="submit" value="Details" class="btn btn-info" />
-                    </form>
                     <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
                         <input type="hidden" asp-for="@bill.Id" />
                         <input type="submit" value="Update" class="btn btn-warning" />

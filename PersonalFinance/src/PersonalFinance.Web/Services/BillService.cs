@@ -52,7 +52,7 @@ namespace PersonalFinance.Web.Services.Interfaces
 
         public async Task<List<Bill>> GetBillsAsync()
         {
-            return await _dataContext.Bills.ToListAsync();
+            return await _dataContext.Bills.OrderBy(b => b.Date).ToListAsync();
         }
 
         public async Task<bool> UpdateBillAsync(Bill billToUpdate)
