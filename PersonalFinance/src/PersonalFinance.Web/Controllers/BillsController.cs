@@ -97,5 +97,24 @@ namespace PersonalFinance.Web.Controllers
             await _billService.DeleteBillAsync(id);
             return RedirectToAction("Index", "Bills");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string search)
+        {
+            if (search == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var expenses = await _billService.SearchBillsAsync(search);
+                return View(expenses);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }

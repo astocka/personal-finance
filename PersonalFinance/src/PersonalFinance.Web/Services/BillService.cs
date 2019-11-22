@@ -65,5 +65,10 @@ namespace PersonalFinance.Web.Services.Interfaces
             var updated = await _dataContext.SaveChangesAsync();
             return updated > 0;
         }
+
+        public async Task<List<Bill>> SearchBillsAsync(string search)
+        {
+            return await _dataContext.Bills.Where(x => x.Date.Value.Equals(search) || x.Notes.Contains(search) || x.Amount.Equals(search)).ToListAsync();
+        }
     }
 }
