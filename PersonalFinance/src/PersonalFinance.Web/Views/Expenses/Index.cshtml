@@ -18,8 +18,11 @@
 
 <br />
 
-<div class="float-right mb-5" style="width:100%;">
+<div class="float-right mb-5" style="width:50%;">
     <canvas id="expensesChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
+</div>
+<div class="float-right mb-5" style="width:50%;">
+    <canvas id="expensesInMonthChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
 </div>
 
 <div class="mt-1">
@@ -62,10 +65,10 @@
 @section Chart{
     <script>
         // chart
-        function BuildChart(labels, values, chartTitle) {
-            var ctx = document.getElementById('expensesChart').getContext('2d');
+        function BuildChart(labels, values, chartTitle, chartName, chartType) {
+            var ctx = document.getElementById(chartName).getContext('2d');
             var expensesChart = new Chart(ctx, {
-                type: 'pie',
+                type: chartType,
                 data: {
                     labels: labels,
                     datasets: [{
@@ -111,13 +114,21 @@
             json.push(rowData);
         }
 
-        // map json values to array
+        // map json values to array - expenses type
         var labels = json.map(function (e) {
             return e.Description;
         });
         var values = json.map(function (e) {
             return parseFloat(e.Amount);
         });
-        var chart = BuildChart(labels, values, "Expenses");
+
+        // map json values to array - expenses in month
+         var labelsMonth = json.map(function (e) {
+            return e.Date;
+        });
+
+        var chart = BuildChart(labels, values, "Expenses", 'expensesChart', 'pie');
+        var chartMonth = BuildChart(labelsMonth, values, "Expenses in month", 'expensesInMonthChart', 'line');
+
     </script>
 }
