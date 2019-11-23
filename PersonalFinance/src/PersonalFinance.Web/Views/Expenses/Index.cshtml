@@ -15,11 +15,15 @@
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
     </form>
 </div>
-  
+
 <br />
 
+<div class="float-right mb-5" style="width:100%;">
+    <canvas id="expensesChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
+</div>
+
 <div class="mt-1">
-    <table class="table table-borderless">
+    <table class="table table-borderless" id="expensesTable">
         <tr class="table-dark">
             <th>Id</th>
             <th>Date</th>
@@ -32,25 +36,88 @@
         </tr>
         @foreach (var expense in Model)
         {
-            <tr class="table table-bordered">
-                <td>@expense.Id.ToString()</td>
-                <td>@expense.Date.ToShortDateString()</td>
-                <td>@expense.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
-                <td>@expense.Description</td>
-                <td>@expense.Payee</td>
-                <td>@expense.Notes</td>
-                <td>@expense.Type</td>
-                <td class="form-inline">
-                    <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
-                        <input type="hidden" asp-for="@expense.Id" />
-                        <input type="submit" value="Update" class="btn btn-warning" />
-                    </form>
-                    <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
-                        <input type="hidden" asp-for="@expense.Id" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
-                    </form>
-                </td>
-            </tr>
+    <tr class="table table-bordered">
+        <td>@expense.Id.ToString()</td>
+        <td>@expense.Date.ToShortDateString()</td>
+        <td class="expensesValue">@expense.Amount</td>
+        <td class="expensesTypes">@expense.Description</td>
+        <td>@expense.Payee</td>
+        <td>@expense.Notes</td>
+        <td>@expense.Type</td>
+        <td class="form-inline">
+            <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
+                <input type="hidden" asp-for="@expense.Id" />
+                <input type="submit" value="Update" class="btn btn-warning" />
+            </form>
+            <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
+                <input type="hidden" asp-for="@expense.Id" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </form>
+        </td>
+    </tr>
         }
     </table>
 </div>
+
+@section Chart{
+    <script>
+        // chart
+        function BuildChart(labels, values, chartTitle) {
+            var ctx = document.getElementById('expensesChart').getContext('2d');
+            var expensesChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartTitle,
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+            return expensesChart;
+        }
+
+        // data
+        var table = document.getElementById('expensesTable');
+        var json = []; 
+        var headers = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            headers[i] = table.rows[0].cells[i].innerHTML;
+        }
+        
+        for (var i = 1; i < table.rows.length; i++) {
+            var tableRow = table.rows[i];
+            var rowData = {};
+            for (var j = 0; j < tableRow.cells.length; j++) {
+                rowData[headers[j]] = tableRow.cells[j].innerHTML;
+            }
+            json.push(rowData);
+        }
+
+        // map json values to array
+        var labels = json.map(function (e) {
+            return e.Description;
+        });
+        var values = json.map(function (e) {
+            return parseFloat(e.Amount);
+        });
+        var chart = BuildChart(labels, values, "Expenses");
+    </script>
+}
