@@ -1,9 +1,29 @@
 ﻿@using System.Globalization;
+@using System.Linq;
 @model List<PersonalFinance.Web.Models.Expense>
 
+@{
+    Dictionary<string, decimal> jsonValues = new Dictionary<string, decimal>();
+    List<string> labels = new List<string>();
+    labels = Model.Select(x => x.Description).Distinct().ToList();
+
+    for (var k = 0; k < labels.Count; k++)
+    {
+        jsonValues.Add(labels[k], 0);
+
+        foreach (var data in Model)
+        {
+            if (data.Description == labels[k])
+            {
+                jsonValues[labels[k]] += data.Amount;
+            }
+        }
+    }
+}
 
 <p class="display-4">Expenses</p>
 <hr />
+
 <div class="mt2 form-inline">
     <a class="btn btn-success" asp-controller="Expenses" asp-action="Create" type="submit">Add expense</a>
     <a class="btn btn-info" asp-controller="Expenses" asp-action="ImportExpenses" type="submit">Import expenses</a>
@@ -17,6 +37,26 @@
 </div>
 
 <br />
+
+<div style="display:none;">
+    <table id="expenses-data">
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in jsonValues)
+            {
+                <tr>
+                    <td>@p.Key</td>
+                    <td>@p.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <div class="float-right mb-5" style="width:50%;">
     <canvas id="expensesChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
@@ -39,25 +79,25 @@
         </tr>
         @foreach (var expense in Model)
         {
-    <tr class="table table-bordered">
-        <td>@expense.Id.ToString()</td>
-        <td>@expense.Date.ToShortDateString()</td>
-        <td class="expensesValue">@expense.Amount</td>
-        <td class="expensesTypes">@expense.Description</td>
-        <td>@expense.Payee</td>
-        <td>@expense.Notes</td>
-        <td>@expense.Type</td>
-        <td class="form-inline">
-            <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
-                <input type="hidden" asp-for="@expense.Id" />
-                <input type="submit" value="Update" class="btn btn-warning" />
-            </form>
-            <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
-                <input type="hidden" asp-for="@expense.Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
-            </form>
-        </td>
-    </tr>
+            <tr class="table table-bordered">
+                <td>@expense.Id.ToString()</td>
+                <td>@expense.Date.ToShortDateString()</td>
+                <td class="expensesValue">@expense.Amount</td>
+                <td class="expensesTypes">@expense.Description</td>
+                <td>@expense.Payee</td>
+                <td>@expense.Notes</td>
+                <td>@expense.Type</td>
+                <td class="form-inline">
+                    <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <input type="submit" value="Update" class="btn btn-warning" />
+                    </form>
+                    <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
         }
     </table>
 </div>
@@ -98,13 +138,13 @@
         }
 
         // data
-        var table = document.getElementById('expensesTable');
-        var json = []; 
+        var table = document.getElementById('expenses-data');
+        var json = [];
         var headers = [];
         for (var i = 0; i < table.rows[0].cells.length; i++) {
             headers[i] = table.rows[0].cells[i].innerHTML;
         }
-        
+
         for (var i = 1; i < table.rows.length; i++) {
             var tableRow = table.rows[i];
             var rowData = {};
@@ -114,21 +154,18 @@
             json.push(rowData);
         }
 
-        // map json values to array - expenses type
+        // map json values to array
+        // expenses type
         var labels = json.map(function (e) {
-            return e.Description;
-        });
-        var values = json.map(function (e) {
-            return parseFloat(e.Amount);
+            return e.Key;
         });
 
-        // map json values to array - expenses in month
-         var labelsMonth = json.map(function (e) {
-            return e.Date;
+        // expenses values
+        var values = json.map(function (e) {
+
+            return parseFloat(e.Value);
         });
 
         var chart = BuildChart(labels, values, "Expenses", 'expensesChart', 'pie');
-        var chartMonth = BuildChart(labelsMonth, values, "Expenses in month", 'expensesInMonthChart', 'line');
-
     </script>
 }
