@@ -1,6 +1,25 @@
 ﻿@using System.Globalization;
+@using System.Linq;
 @model List<PersonalFinance.Web.Models.Revenue>
 
+@{
+    Dictionary<string, decimal> jsonValues = new Dictionary<string, decimal>();
+    List<string> labels = new List<string>();
+    labels = Model.Select(x => x.Description).Distinct().ToList();
+
+    for (var k = 0; k < labels.Count; k++)
+    {
+        jsonValues.Add(labels[k], 0);
+
+        foreach (var data in Model)
+        {
+            if (data.Description == labels[k])
+            {
+                jsonValues[labels[k]] += data.Amount;
+            }
+        }
+    }
+}
 
 <p class="display-4">Revenues</p>
 <hr />
@@ -17,6 +36,30 @@
 </div>
 <br />
 
+<div style="display:none;">
+    <table id="revenues-data">
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in jsonValues)
+            {
+                <tr>
+                    <td>@p.Key</td>
+                    <td>@p.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="float-right mb-5" style="width:50%;">
+    <canvas id="revenuesChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
+</div>
+
 <div class="mt-1">
     <table class="table table-borderless">
         <tr class="table-dark">
@@ -30,24 +73,92 @@
         </tr>
         @foreach (var revenue in Model)
         {
-    <tr class="table table-bordered">
-        <td>@revenue.Id.ToString()</td>
-        <td>@revenue.Date.ToShortDateString()</td>
-        <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
-        <td>@revenue.Description</td>
-        <td>@revenue.Payer</td>
-        <td>@revenue.Notes</td>
-        <td class="form-inline">
-            <form asp-controller="Revenues" asp-action="Update" asp-route-id="@revenue.Id" method="get">
-                <input type="hidden" asp-for="@revenue.Id" />
-                <input type="submit" value="Update" class="btn btn-warning" />
-            </form>
-            <form asp-controller="Revenues" asp-action="Delete" asp-route-id="@revenue.Id" method="post">
-                <input type="hidden" asp-for="@revenue.Id" />
-                <input type="submit" value="Delete" class="btn btn-danger" />
-            </form>
-        </td>
-    </tr>
+            <tr class="table table-bordered">
+                <td>@revenue.Id.ToString()</td>
+                <td>@revenue.Date.ToShortDateString()</td>
+                <td>@revenue.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
+                <td>@revenue.Description</td>
+                <td>@revenue.Payer</td>
+                <td>@revenue.Notes</td>
+                <td class="form-inline">
+                    <form asp-controller="Revenues" asp-action="Update" asp-route-id="@revenue.Id" method="get">
+                        <input type="hidden" asp-for="@revenue.Id" />
+                        <input type="submit" value="Update" class="btn btn-warning" />
+                    </form>
+                    <form asp-controller="Revenues" asp-action="Delete" asp-route-id="@revenue.Id" method="post">
+                        <input type="hidden" asp-for="@revenue.Id" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
         }
     </table>
 </div>
+
+@section Chart{
+    <script>
+        // chart
+        function BuildChart(labels, values, chartTitle, chartName, chartType) {
+            var ctx = document.getElementById(chartName).getContext('2d');
+            var revenuesChart = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartTitle,
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+            return revenuesChart;
+        }
+
+        // data
+        var table = document.getElementById('revenues-data');
+        var json = [];
+        var headers = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            headers[i] = table.rows[0].cells[i].innerHTML;
+        }
+
+        for (var i = 1; i < table.rows.length; i++) {
+            var tableRow = table.rows[i];
+            var rowData = {};
+            for (var j = 0; j < tableRow.cells.length; j++) {
+                rowData[headers[j]] = tableRow.cells[j].innerHTML;
+            }
+            json.push(rowData);
+        }
+
+        // map json values to array
+        // revenues type
+        var labels = json.map(function (e) {
+            return e.Key;
+        });
+
+        // revenues values
+        var values = json.map(function (e) {
+
+            return parseFloat(e.Value);
+        });
+
+        var chart = BuildChart(labels, values, "Revenues", 'revenuesChart', 'pie');
+    </script>
+}
