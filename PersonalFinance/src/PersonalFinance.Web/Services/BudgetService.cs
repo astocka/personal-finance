@@ -176,5 +176,11 @@ namespace PersonalFinance.Web.Services
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
         }
+
+        public async Task<Budget> GetCurrentBudget()
+        {
+            DateTime currentDate = DateTime.Now;
+            return await _dataContext.Budgets.FirstOrDefaultAsync(x => x.Year == currentDate.Year && x.Month == currentDate.Month);
+        }
     }
 }

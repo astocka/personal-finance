@@ -70,5 +70,10 @@ namespace PersonalFinance.Web.Services.Interfaces
         {
             return await _dataContext.Bills.Where(x => x.Date.Value.Equals(search) || x.Notes.Contains(search) || x.Amount.Equals(search)).ToListAsync();
         }
+
+        public async Task<List<Bill>> GetUnpaidBillsAsync()
+        {
+            return await _dataContext.Bills.Where(x => x.IsPaid.Equals(false)).ToListAsync();
+        }
     }
 }

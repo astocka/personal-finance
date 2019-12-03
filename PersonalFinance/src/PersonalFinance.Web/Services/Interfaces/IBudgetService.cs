@@ -21,5 +21,6 @@ namespace PersonalFinance.Web.Services.Interfaces
         Task<bool> UpdatePlannedRevenueAsync(PlannedRevenue plannedRevenue);
         Task<bool> DeletePlannedRevenueAsync(int? plannedRevenueId);
         Task<bool> DeletePlannedExpenseAsync(int? plannedExpenseId);
+        Task<Budget> GetCurrentBudget();
     }
 }

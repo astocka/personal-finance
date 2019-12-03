@@ -14,5 +14,6 @@ namespace PersonalFinance.Web.Services.Interfaces
         Task<bool> UpdateBillAsync(Bill billToUpdate);
         Task<bool> DeleteBillAsync(int? billId);
         Task<List<Bill>> SearchBillsAsync(string search);
+        Task<List<Bill>> GetUnpaidBillsAsync();
     }
 }

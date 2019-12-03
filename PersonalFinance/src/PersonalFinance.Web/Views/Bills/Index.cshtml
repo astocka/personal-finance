@@ -36,13 +36,19 @@
             @foreach (var bill in unpaid)
             {
                 <tr class="table table-bordered">
-                    <td>@bill.Date.Value.ToShortDateString()</td>
+                    @if (bill.Date.HasValue)
+                    {
+                        <td>@bill.Date.Value.ToShortDateString()</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td class="text-danger font-weight-bold">@bill.Amount</td>
                     <td>@bill.Notes</td>
-                    <td class="text-danger font-weight-bold">@bill.DueDate</td>
+                    <td class="text-danger font-weight-bold">@bill.DueDate.ToShortDateString()</td>
                     <td class="form-inline">
-                        <form asp-controller="Bills" asp-action="Pay" asp-route-Id="@bill.Id" method="post">
-                            <input type="hidden" asp-for="@bill.Id" />
+                        <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
                             <input type="submit" value="Pay" class="btn btn-success" />
                         </form>
                     </td>
@@ -99,8 +105,7 @@
                 }
                 <td class="form-inline">
                     <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-                        <input type="hidden" asp-for="@bill.Id" />
-                        <input type="submit" value="Update" class="btn btn-warning" />
+                        <input type="submit" value="Pay" class="btn btn-success" />
                     </form>
                     <form asp-controller="Bills" asp-action="Delete" asp-route-Id="@bill.Id" method="post">
                         <input type="hidden" asp-for="@bill.Id" />
