@@ -1,61 +1,63 @@
 ﻿@using System.Globalization;
+@using PersonalFinance.Web.Helpers
 @model PersonalFinance.Web.Models.Budget
 
 @{
     ViewData["Title"] = "Home Page";
+    var dateConventer = new DateConventer();
 }
 
-<div class="text-center">
+<div>
     <h1 class="display-4">Dashboard</h1>
 </div>
-
-<p class="display-4">Current budget</p>
 <hr />
 
-<div class="mt-3">
+<p class="h3">Current budget</p>
+
+<div class="mt-3 col-10">
     <table class="table table-borderless">
-        <tr class="table-dark">
+        <tr class="table-success">
             <th>Month</th>
             <th>Year</th>
             <th>Total Revenue</th>
             <th>Planned Expenses</th>
             <th>Balance</th>
-            <th>Options</th>
+            <th>Details/Update/Delete</th>
         </tr>
         <tr class="table table-bordered">
-            <td>@Model.Month</td>
+            
+            <td>@dateConventer.ConvertNumberToMonth(@Model.Month)</td>
             <td>@Model.Year</td>
             <td>@Model.TotalRevenue.ToString("C", CultureInfo.CurrentCulture)</td>
             <td>@Model.PlannedExpenses.ToString("C", CultureInfo.CurrentCulture)</td>
             <td>@Model.Balance.ToString("C", CultureInfo.CurrentCulture)</td>
             <td class="form-inline">
-                <form asp-controller="Budget" asp-action="Details" asp-route-budgetId="@Model.Id" method="get">
-                    <input type="submit" value="Details" class="btn btn-info" />
+                <form asp-controller="Budget" asp-action="Details" asp-route-budgetId="@Model.Id" method="get" class="mr-3">
+                    <a href="Budget/Details/@Model.Id"><img src="~/img/details-24px.svg" /></a>
                 </form>
-                <form asp-controller="Budget" asp-action="Update" asp-route-budgetId="@Model.Id" method="get">
+                <form asp-controller="Budget" asp-action="Update" asp-route-budgetId="@Model.Id" method="get" class="mr-3">
                     <input type="hidden" asp-for="@Model.Id" />
-                    <input type="submit" value="Update" class="btn btn-warning" />
+                    <a href="Budget/@Model.Id/Update?Id=@Model.Id"><img src="~/img/update-24px.svg" /></a>
                 </form>
                 <form asp-controller="Budget" asp-action="Delete" asp-route-budgetId="@Model.Id" method="post">
                     <input type="hidden" asp-for="@Model.Id" />
-                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a href="Budget/Delete/@Model.Id"><img src="~/img/delete_forever-24px.svg" /></a>
                 </form>
             </td>
         </tr>
     </table>
 </div>
 
-<p class="display-4">Bill's to pay</p>
-<hr />
+<p class="h3">Bill's to pay</p>
 
-<div class="mt-3">
+<div class="mt-3 col-10">
     <table class="table table-borderless">
-        <tr class="table-dark">
+        <tr class="table-success">
             <th>Date</th>
             <th>Amount</th>
             <th>Notes</th>
             <th>Due date</th>
-            <th>Options</th>
+            <th>Pay</th>
         </tr>
         @foreach (var bill in ViewBag.UnpaidBills)
         {
@@ -68,7 +70,7 @@
                     @if (bill.Id != null)
                     {
                         <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-                            <input type="submit" value="Pay" class="btn btn-success" />
+                        <a href="Bills/Update/@bill.Id"><img src="~/img/payment-24px.svg" /></a>
                         </form>
                     }
                 </td>
@@ -77,17 +79,16 @@
     </table>
 </div>
 
-<p class="display-4">Bills after deadlines</p>
-<hr />
+<p class="h3">Bills after deadlines</p>
 
-<div class="mt-3">
+<div class="mt-3 col-10">
     <table class="table table-borderless">
-        <tr class="table-dark">
+        <tr class="table-success">
             <th>Date</th>
             <th>Amount</th>
             <th>Notes</th>
             <th>Due date</th>
-            <th>Options</th>
+            <th>Pay</th>
         </tr>
         @foreach (var bill in ViewBag.UnpaidBills)
         {
@@ -102,7 +103,7 @@
                         @if (bill.Id != null)
                         {
                             <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-                                <input type="submit" value="Pay" class="btn btn-success" />
+                                <a href="Bills/Update/@bill.Id"><img src="~/img/payment-24px.svg" /></a>
                             </form>
                         }
                     </td>

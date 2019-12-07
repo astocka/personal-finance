@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Personal Finance</title>
 
-    <environment include="Development">
+    @*<environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     </environment>
     <environment exclude="Development">
@@ -14,13 +14,14 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
-    </environment>
+    </environment>*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Personal Finance</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -29,33 +30,50 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-controller="Budget" asp-action="Index">Budget</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Expenses" asp-action="Index">Expenses</a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-controller="Revenues" asp-action="Index">Revenues</a>
-                        </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-controller="Bills" asp-action="Index">Bills</a>
-                        </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>*@
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item mt-2">
+                            <img src="~/img/home-24px.svg" class="float-left mt-2 mr-2 ml-2" />
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
+                        </li>
+                        <li>
+                            <img src="~/img/calendar_today-24px.svg" class="float-left mt-2 mr-2 ml-2" />
+                            <a class="nav-link text-dark" asp-controller="Budget" asp-action="Index">Budget</a>
+                        </li>
+                        <li class="nav-item">
+                            <img src="~/img/remove_circle-24px.svg" class="float-left mt-2 mr-2 ml-2" />
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Expenses" asp-action="Index">Expenses</a>
+                        </li>
+                        <li>
+                            <img src="~/img/add_circle-24px.svg" class="float-left mt-2 mr-2 ml-2" />
+                            <a class="nav-link text-dark" asp-controller="Revenues" asp-action="Index">Revenues</a>
+                        </li>
+                        <li>
+                            <img src="~/img/credit_card-24px.svg" class="float-left mt-2 mr-2 ml-2" />
+                            <a class="nav-link text-dark" asp-controller="Bills" asp-action="Index">Bills</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 float-right">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
+
+    <footer class="border-top footer text-muted text-center">
         <div class="container">
             &copy; 2019 - Personal Finance
         </div>
