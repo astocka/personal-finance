@@ -88,7 +88,8 @@ namespace PersonalFinance.Web.Controllers
             return View(bill);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

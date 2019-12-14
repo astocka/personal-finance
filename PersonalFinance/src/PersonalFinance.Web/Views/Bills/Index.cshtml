@@ -2,12 +2,14 @@
 @model List<PersonalFinance.Web.Models.Bill>
 
 @{
-    List<PersonalFinance.Web.Models.Bill> unpaid = Model.Where(x => x.IsPaid == false && x.DueDate < DateTime.Now).AsQueryable().ToList();
+    ViewData["Title"] = "Bills";
+    List<PersonalFinance.Web.Models.Bill> unpaid = Model
+        .Where(x => x.IsPaid == false && x.DueDate < DateTime.Now).AsQueryable().ToList();
 }
 
 <p class="display-4">Bills</p>
 <hr />
-<div class="mt2 form-inline">
+<div class="mt2 ml-3 form-inline">
     <a class="btn btn-success" asp-controller="Bills" asp-action="Create">Add bill</a>
     <form class="form-inline mt-2 my-2 ml-2" asp-controller="Bills" asp-action="Search" method="get">
         <input class="form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
@@ -15,10 +17,10 @@
     </form>
 </div>
 
-<div class="mt-3">
+<div class="mt-3 col-8">
     <p class="font-weight-bold">Unpaid</p>
     <table class="table table-borderless">
-        <tr class="table-dark">
+        <tr class="table-warning">
             <th>Date</th>
             <th>Amount</th>
             <th>Notes</th>
@@ -44,12 +46,14 @@
                     {
                         <td></td>
                     }
-                    <td class="text-danger font-weight-bold">@bill.Amount</td>
+                    <td class="text-danger font-weight-bold">@bill.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
                     <td>@bill.Notes</td>
                     <td class="text-danger font-weight-bold">@bill.DueDate.ToShortDateString()</td>
                     <td class="form-inline">
                         <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-                            <input type="submit" value="Pay" class="btn btn-success" />
+                            <button type="submit" class="btn btn-outline-success btn-sm">
+                                <img src="~/img/credit_card-24px.svg" class="mr-2" /><span class="mr-2">Pay</span>
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -59,11 +63,10 @@
     </table>
 </div>
 
-<div class="mt-3">
+<div class="mt-3 col-8">
     <p class="font-weight-bold">All</p>
     <table class="table table-borderless">
-        <tr class="table-dark">
-            <th>Id</th>
+        <tr class="table-info">
             <th>Date</th>
             <th>Amount</th>
             <th>Notes</th>
@@ -75,7 +78,6 @@
         @foreach (var bill in Model)
         {
             <tr class="table table-bordered">
-                <td>@bill.Id.ToString()</td>
                 @if (bill.Date.HasValue)
                 {
                     <td>@bill.Date.Value.ToShortDateString()</td>
@@ -103,13 +105,17 @@
                 {
                     <td></td>
                 }
-                <td class="form-inline">
-                    <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-                        <input type="submit" value="Pay" class="btn btn-success" />
+                <td class="form-inline ml-1">
+                    <form class="mr-3" asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
+                        <button type="submit" class="btn btn-outline-success btn-sm">
+                            <img src="~/img/credit_card-24px.svg" class="mr-2" /><span class="mr-2">Pay</span>
+                        </button>
                     </form>
                     <form asp-controller="Bills" asp-action="Delete" asp-route-Id="@bill.Id" method="post">
                         <input type="hidden" asp-for="@bill.Id" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <img src="~/img/delete_forever-24px.svg" class="mr-2" /><span class="mr-2">Delete</span>
+                        </button>
                     </form>
                 </td>
             </tr>

@@ -3,6 +3,7 @@
 @model List<PersonalFinance.Web.Models.Expense>
 
 @{
+    ViewData["Title"] = "Expenses";
     Dictionary<string, decimal> jsonValues = new Dictionary<string, decimal>();
     List<string> labels = new List<string>();
     labels = Model.Select(x => x.Description).Distinct().ToList();
@@ -24,12 +25,10 @@
 <p class="display-4">Expenses</p>
 <hr />
 
-<div class="mt2 form-inline">
-    <a class="btn btn-success" asp-controller="Expenses" asp-action="Create" type="submit">Add expense</a>
-    <a class="btn btn-info" asp-controller="Expenses" asp-action="ImportExpenses" type="submit">Import expenses</a>
+<div class="mt2 ml-3 form-inline">
+    <a class="btn btn-success" asp-controller="Expenses" asp-action="Create">Add expense</a>
+    <a class="btn btn-info ml-2" asp-controller="Expenses" asp-action="ImportExpenses">Import expenses</a>
     <span class="ml-2 mt-1 font-weight-bold text-danger"> @TempData["ExpensesExist"]</span>
-</div>
-<div>
     <form class="form-inline mt-2 my-2" asp-controller="Expenses" asp-action="Search" method="get">
         <input class="form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
@@ -37,6 +36,49 @@
 </div>
 
 <br />
+
+<div class="mb-5" style="width:35%;">
+    <canvas id="expensesChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
+</div>
+
+<div class="mt-1 col-8">
+    <table class="table table-borderless" id="expensesTable">
+        <tr class="table-info">
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Payee</th>
+            <th>Notes</th>
+            <th>Type</th>
+            <th>Options</th>
+        </tr>
+        @foreach (var expense in Model)
+        {
+            <tr class="table table-bordered">
+                <td>@expense.Date.ToShortDateString()</td>
+                <td class="expensesValue">@expense.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
+                <td class="expensesTypes">@expense.Description</td>
+                <td>@expense.Payee</td>
+                <td>@expense.Notes</td>
+                <td>@expense.Type</td>
+                <td class="form-inline ml-3">
+                    <form class="mr-2" asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            <img src="~/img/update-24px.svg" class="mr-2" /><span class="mr-2">Update</span>
+                        </button>
+                    </form>
+                    <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
+                        <input type="hidden" asp-for="@expense.Id" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <img src="~/img/delete_forever-24px.svg" class="mr-2" /><span class="mr-2">Delete</span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 
 <div style="display:none;">
     <table id="expenses-data">
@@ -55,47 +97,6 @@
                 </tr>
             }
         </tbody>
-    </table>
-</div>
-
-<div class="float-right mb-5" style="width:50%;">
-    <canvas id="expensesChart" style="display:block; width:516px; height:258px;" class="chartjs-render-monitor" width="516" height="258"></canvas>
-</div>
-
-<div class="mt-1">
-    <table class="table table-borderless" id="expensesTable">
-        <tr class="table-dark">
-            <th>Id</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Description</th>
-            <th>Payee</th>
-            <th>Notes</th>
-            <th>Type</th>
-            <th>Options</th>
-        </tr>
-        @foreach (var expense in Model)
-        {
-            <tr class="table table-bordered">
-                <td>@expense.Id.ToString()</td>
-                <td>@expense.Date.ToShortDateString()</td>
-                <td class="expensesValue">@expense.Amount</td>
-                <td class="expensesTypes">@expense.Description</td>
-                <td>@expense.Payee</td>
-                <td>@expense.Notes</td>
-                <td>@expense.Type</td>
-                <td class="form-inline">
-                    <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
-                        <input type="hidden" asp-for="@expense.Id" />
-                        <input type="submit" value="Update" class="btn btn-warning" />
-                    </form>
-                    <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
-                        <input type="hidden" asp-for="@expense.Id" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
-                    </form>
-                </td>
-            </tr>
-        }
     </table>
 </div>
 
