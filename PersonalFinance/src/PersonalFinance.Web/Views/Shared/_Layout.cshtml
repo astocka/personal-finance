@@ -43,26 +43,26 @@
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <div class="list-group">
+                <div class="sidebar">
+                    <div class="list-group mt-2">
                         <ul class="nav flex-column mt-2">
-                            <li class="list-group-item list-group-item-action">
+                            <li class="list-group-item list-group-item-action @ViewBag.Dashboard">
                                 <img src="~/img/home-24px.svg" class="float-left mt-2 mr-2 ml-2" />
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
                             </li>
-                            <li class="list-group-item list-group-item-action">
+                            <li class="list-group-item list-group-item-action @ViewBag.Budget">
                                 <img src="~/img/calendar_today-24px.svg" class="float-left mt-2 mr-2 ml-2" />
                                 <a class="nav-link text-dark" asp-controller="Budget" asp-action="Index">Budget</a>
                             </li>
-                            <li class="list-group-item list-group-item-action">
+                            <li class="list-group-item list-group-item-action @ViewBag.Expenses">
                                 <img src="~/img/remove_circle-24px.svg" class="float-left mt-2 mr-2 ml-2" />
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Expenses" asp-action="Index">Expenses</a>
                             </li>
-                            <li class="list-group-item list-group-item-action">
+                            <li class="list-group-item list-group-item-action @ViewBag.Revenues">
                                 <img src="~/img/add_circle-24px.svg" class="float-left mt-2 mr-2 ml-2" />
                                 <a class="nav-link text-dark" asp-controller="Revenues" asp-action="Index">Revenues</a>
                             </li>
-                            <li class="list-group-item list-group-item-action">
+                            <li class="list-group-item list-group-item-action @ViewBag.Bills">
                                 <img src="~/img/credit_card-24px.svg" class="float-left mt-2 mr-2 ml-2" />
                                 <a class="nav-link text-dark" asp-controller="Bills" asp-action="Index">Bills</a>
                             </li>
@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 float-right">
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 float-right mt-2">
                 @RenderBody()
             </main>
         </div>

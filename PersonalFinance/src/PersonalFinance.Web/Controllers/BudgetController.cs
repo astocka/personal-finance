@@ -20,6 +20,7 @@ namespace PersonalFinance.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            ViewBag.Budget = "active";
             return View(await _budgetService.GetBudgetAsync());
         }
 

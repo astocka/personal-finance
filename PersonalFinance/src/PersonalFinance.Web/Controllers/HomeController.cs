@@ -28,6 +28,7 @@ namespace PersonalFinance.Web.Controllers
 
             if (currentBudget != null)
             {
+                ViewBag.Dashboard = "active";
                 return View(currentBudget);
             }
             return RedirectToAction("Create", "Budget");
