@@ -1,34 +1,39 @@
 ﻿@using PersonalFinance.Web.Models
 @model PersonalFinance.Web.Models.PlannedExpense
 
+@{
+    ViewData["Title"] = "Budget";
+}
+
+<p class="display-4">Create planned expense</p>
+<hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <form class="form" asp-controller="Budget" asp-action="CreatePlannedExpense" asp-route-budgetId="@ViewData["BudgetId"]" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Amount" class="custom-control"></label>
-            </div>
-            <div class="form-group">
+                <label asp-for="Amount"></label>
                 <input type="text" asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Kind" class="custom-control"></label>
+                <label class="mr-3" asp-for="Kind"></label>
                 <select asp-for="Kind" asp-items="Html.GetEnumSelectList<ExpenseKind>()"></select>
                 <span asp-validation-for="Kind" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Date" class="custom-control"></label>
+                <label asp-for="Date"></label>
                 <input type="date" asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsPaid" class="custom-control"></label>
-                <input type="checkbox" asp-for="IsPaid" class="form-control" />
+                <input type="checkbox" asp-for="IsPaid" class="float-left mr-3" />
+                <label asp-for="IsPaid"></label>
                 <span asp-validation-for="IsPaid" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PaidDate" class="custom-control"></label>
+                <label asp-for="PaidDate"></label>
                 <input type="date" asp-for="PaidDate" class="form-control" />
                 <span asp-validation-for="PaidDate" class="text-danger"></span>
             </div>
