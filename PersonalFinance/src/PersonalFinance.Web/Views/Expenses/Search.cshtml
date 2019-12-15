@@ -1,19 +1,21 @@
 ﻿@using System.Globalization;
 @model List<PersonalFinance.Web.Models.Expense>
 
+@{
+    ViewData["Title"] = "Expenses";
+}
 
 <p class="display-4">Search result - expenses</p>
 <hr />
 <div>
-   <a class="btn btn-dark" asp-controller="Expenses" asp-action="Index">Back to list</a>
+    <a class="btn btn-dark" asp-controller="Expenses" asp-action="Index">Back to list</a>
 </div>
 
 <br />
 
-<div class="mt-1">
+<div class="mt-2 col-8">
     <table class="table table-borderless">
-        <tr class="table-dark">
-            <th>Id</th>
+        <tr class="table-info">
             <th>Date</th>
             <th>Amount</th>
             <th>Description</th>
@@ -25,7 +27,6 @@
         @foreach (var expense in Model)
         {
             <tr class="table table-bordered">
-                <td>@expense.Id.ToString()</td>
                 <td>@expense.Date.ToShortDateString()</td>
                 <td>@expense.Amount.ToString("C", CultureInfo.CurrentCulture)</td>
                 <td>@expense.Description</td>
@@ -33,13 +34,17 @@
                 <td>@expense.Notes</td>
                 <td>@expense.Type</td>
                 <td class="form-inline">
-                    <form asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
+                    <form class="mr-2" asp-controller="Expenses" asp-action="Update" asp-route-id="@expense.Id" method="get">
                         <input type="hidden" asp-for="@expense.Id" />
-                        <input type="submit" value="Update" class="btn btn-warning" />
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            <img src="~/img/update-24px.svg" class="mr-2" /><span class="mr-2">Update</span>
+                        </button>
                     </form>
                     <form asp-controller="Expenses" asp-action="Delete" asp-route-id="@expense.Id" method="post">
                         <input type="hidden" asp-for="@expense.Id" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <img src="~/img/delete_forever-24px.svg" class="mr-2" /><span class="mr-2">Delete</span>
+                        </button>
                     </form>
                 </td>
             </tr>

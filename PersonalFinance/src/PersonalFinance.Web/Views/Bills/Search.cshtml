@@ -1,17 +1,19 @@
 ﻿@using System.Globalization;
 @model List<PersonalFinance.Web.Models.Bill>
 
+@{
+    ViewData["Title"] = "Bills";
+}
 
-    <p class="display-4">Search result - bills</p>
+<p class="display-4">Search result - bills</p>
 <hr />
 <div>
     <a class="btn btn-dark" asp-controller="Bills" asp-action="Index">Back to list</a>
 </div>
 
-<div class="mt-3">
+<div class="mt-3 col-8">
     <table class="table table-borderless">
-        <tr class="table-dark">
-            <th>Id</th>
+        <tr class="table-info">
             <th>Date</th>
             <th>Amount</th>
             <th>Notes</th>
@@ -23,7 +25,6 @@
         @foreach (var bill in Model)
         {
             <tr class="table table-bordered">
-                <td>@bill.Id.ToString()</td>
                 @if (bill.Date.HasValue)
                 {
                     <td>@bill.Date.Value.ToShortDateString()</td>
@@ -44,16 +45,19 @@
                 {
                     <td></td>
                 }
-                <td class="form-inline">
-                    <form asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
-                        <input type="hidden" asp-for="@bill.Id" />
-                        <input type="submit" value="Update" class="btn btn-warning" />
-                    </form>
-                    <form asp-controller="Bills" asp-action="Delete" asp-route-Id="@bill.Id" method="post">
-                        <input type="hidden" asp-for="@bill.Id" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
-                    </form>
-                </td>
+            <td class="form-inline">
+                <form class="mr-3" asp-controller="Bills" asp-action="Update" asp-route-Id="@bill.Id" method="get">
+                    <button type="submit" class="btn btn-outline-success btn-sm">
+                        <img src="~/img/credit_card-24px.svg" class="mr-2" /><span class="mr-2">Pay</span>
+                    </button>
+                </form>
+                <form asp-controller="Bills" asp-action="Delete" asp-route-Id="@bill.Id" method="post">
+                    <input type="hidden" asp-for="@bill.Id" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <img src="~/img/delete_forever-24px.svg" class="mr-2" /><span class="mr-2">Delete</span>
+                    </button>
+                </form>
+            </td>
             </tr>
         }
     </table>
