@@ -1,0 +1,39 @@
+﻿@model PersonalFinance.Web.ViewModels.LoginViewModel
+
+@{ 
+    ViewData["Title"] = "Login";
+    Layout = "../Shared/_LoginRegisterLayout.cshtml";
+}
+
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-4">
+                    <form class="login-box col-md-12" id="login-form" asp-action="Login" method="post">
+                        <div class="text-center">
+                            <img src="~/img/icons8-wallet-100.png" class="mt-5" />
+                            <p class="h3 text-primary text-monospace">Personal Finance</p>
+                            <p class="h5 mt-5 mb-3 ">Login</p>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Login" class="sr-only"></label>
+                            <input class="form-control d-block" style="width: 100%" asp-for="Login" placeholder="Login" required autofocus />
+                            <span asp-validation-for="Login" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="sr-only"></label>
+                            <input type="password" class="form-control d-block showpassword" style="width: 100%" id="password" asp-for="Password" placeholder="Password" required />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <label>
+                            <input asp-for="RememberMe" type="checkbox">Remember me
+                        </label>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
+                        </div>
+                        <div class="text-justify">
+                            Create an account <a asp-controller="Accounts" asp-action="Register" class="link text-danger">here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
